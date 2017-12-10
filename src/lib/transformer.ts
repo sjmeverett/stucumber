@@ -1,38 +1,24 @@
 import {Feature, Scenario, Clause, parse} from './parser';
 
-export interface FeatureTransformer<T> {
-  (feature: Feature, scenarios: T[]): T;
-}
+export default abstract class Transformer<T> {
+  protected abstract transformFeature(filename: string, feature: Feature, scenarios: T[]): T;
+  protected abstract transformScenario(filename: string, feature: Feature, scenario: Scenario, rules: T[]): T;
+  protected abstract transformRule(filename: string, feature: Feature, scenario: Scenario, rule: Clause): T;
 
-export interface ScenarioTransformer<T> {
-  (feature: Feature, scenario: Scenario, rules: T[]): T;
-}
+  transform(filename: string, source: string);
+  transform(filename: string, feature: Feature);
+  transform(filename: string, source: string | Feature) {
+    const feature = typeof source === 'string' ? parse(source) : source;
 
-export interface RuleTransformer<T> {
-  (feature: Feature, scenario: Scenario, rule: Clause): T;
-}
-
-export default class Transformer<T> {
-  constructor(
-    private featureTransformer: FeatureTransformer<T>,
-    private scenarioTransformer: ScenarioTransformer<T>,
-    private ruleTransformer: RuleTransformer<T>
-  ) {}
-
-  transform(source: string);
-  transform(feature: Feature);
-  transform(source: string | Feature) {
-    const feature = typeof source === 'string'
-      ? parse(source)
-      : source;
-
-    return this.featureTransformer(
+    return this.transformFeature(
+      filename,
       feature,
       feature.scenarios.map((scenario) =>
-        this.scenarioTransformer(
+        this.transformScenario(
+          filename,
           feature,
           scenario,
-          scenario.rules.map((rule) => this.ruleTransformer(feature, scenario, rule))
+          scenario.rules.map((rule) => this.transformRule(filename, feature, scenario, rule))
         )
       )
     );

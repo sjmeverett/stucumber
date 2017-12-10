@@ -12,6 +12,7 @@
   "devDependencies": {
     "@types/jest": "^21.1.8",
     "@types/node": "^8.0.57",
+    "@types/source-map": "^0.5.2",
     "grunt": "^1.0.1",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-peg": "^2.0.1",
@@ -34,5 +35,8 @@
   "bugs": {
     "url": "https://github.com/stewartml/stucumber/issues"
   },
-  "homepage": "https://github.com/stewartml/stucumber#readme"
+  "homepage": "https://github.com/stewartml/stucumber#readme",
+  "dependencies": {
+    "source-map": "^0.6.1"
+  }
 }

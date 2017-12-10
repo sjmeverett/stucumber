@@ -6,6 +6,9 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "types": ["node", "jest"],
+    "paths": {
+      "source-map": ["node_modules/@types/source-map"]
+    },
     "declaration": true
   }
 }
