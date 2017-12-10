@@ -11,6 +11,13 @@ export interface Scenario {
   annotations: string[];
 }
 
-export type Clause = string;
+export interface Clause {
+  value: string;
+  location: {
+    line: number;
+    column: number;
+    offset: number;
+  }
+}
 
 export function parse(source: string): Feature;

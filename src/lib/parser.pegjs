@@ -61,8 +61,8 @@ Scenario = _ annotations:Annotations TScenario name:String NL rules:Rules _
   / _ annotations:Annotations TScenarioOutline name:String NL rules:Rules examples:Examples _
   { 
     return examples.map((example) => ({
-      name: expandTemplateString(name, example),
-      rules: rules.map((template) => expandTemplateString(template, example)),
+      name: {value: expandTemplateString(name.value, example), location: name.location},
+      rules: rules.map((template) => ({value: expandTemplateString(template.value, example), location: template.location})),
       annotations
     }));
   }
@@ -134,7 +134,12 @@ TTableCell
 
 String
   = str:[^\n]+
-	{ return str.join('').trim() }
+  { 
+    return {
+      value: str.join('').trim(),
+      location: location().start
+    }
+  }
 
 Keyword
   = str:[a-zA-Z0-9_-]+

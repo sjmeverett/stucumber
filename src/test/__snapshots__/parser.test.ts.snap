@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Parser should parse a scenario outline 1`] = `
+Object {
+  "annotations": Array [],
+  "name": Object {
+    "location": Object {
+      "column": 9,
+      "line": 1,
+      "offset": 8,
+    },
+    "value": "foo",
+  },
+  "scenarios": Array [
+    Object {
+      "annotations": Array [],
+      "name": Object {
+        "location": Object {
+          "column": 20,
+          "line": 2,
+          "offset": 32,
+        },
+        "value": "this is a scenario outline",
+      },
+      "rules": Array [
+        Object {
+          "location": Object {
+            "column": 10,
+            "line": 3,
+            "offset": 69,
+          },
+          "value": "that I have abc",
+        },
+        Object {
+          "location": Object {
+            "column": 9,
+            "line": 4,
+            "offset": 98,
+          },
+          "value": "I 123",
+        },
+        Object {
+          "location": Object {
+            "column": 9,
+            "line": 5,
+            "offset": 116,
+          },
+          "value": "I -£*%",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Parser should parse a scenario with annotations 1`] = `
+Object {
+  "annotations": Array [
+    "annotation1",
+  ],
+  "name": Object {
+    "location": Object {
+      "column": 9,
+      "line": 2,
+      "offset": 21,
+    },
+    "value": "foo",
+  },
+  "scenarios": Array [
+    Object {
+      "annotations": Array [
+        "annotation2",
+        "annotation3",
+      ],
+      "name": Object {
+        "location": Object {
+          "column": 12,
+          "line": 5,
+          "offset": 67,
+        },
+        "value": "this is a test",
+      },
+      "rules": Array [
+        Object {
+          "location": Object {
+            "column": 6,
+            "line": 6,
+            "offset": 88,
+          },
+          "value": "a thing",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Parser should parse a standard scenario 1`] = `
+Object {
+  "annotations": Array [],
+  "name": Object {
+    "location": Object {
+      "column": 9,
+      "line": 1,
+      "offset": 8,
+    },
+    "value": "foo",
+  },
+  "scenarios": Array [
+    Object {
+      "annotations": Array [],
+      "name": Object {
+        "location": Object {
+          "column": 12,
+          "line": 6,
+          "offset": 75,
+        },
+        "value": "this is a test",
+      },
+      "rules": Array [
+        Object {
+          "location": Object {
+            "column": 10,
+            "line": 7,
+            "offset": 100,
+          },
+          "value": "that I am testing",
+        },
+        Object {
+          "location": Object {
+            "column": 8,
+            "line": 8,
+            "offset": 126,
+          },
+          "value": "I am still testing",
+        },
+        Object {
+          "location": Object {
+            "column": 9,
+            "line": 9,
+            "offset": 154,
+          },
+          "value": "I test",
+        },
+        Object {
+          "location": Object {
+            "column": 8,
+            "line": 10,
+            "offset": 169,
+          },
+          "value": "continue testing",
+        },
+        Object {
+          "location": Object {
+            "column": 9,
+            "line": 11,
+            "offset": 195,
+          },
+          "value": "I want to test",
+        },
+        Object {
+          "location": Object {
+            "column": 8,
+            "line": 12,
+            "offset": 218,
+          },
+          "value": "test",
+        },
+      ],
+    },
+  ],
+}
+`;
