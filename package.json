@@ -1,11 +1,12 @@
 {
   "name": "stucumber",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A Gherkin parser and Cucumber-like implementation for JavaScript",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
   "scripts": {
-    "test": "jest --config=jest.config.json --no-cache"
+    "test": "jest --config=jest.config.json --no-cache",
+    "prepublish": "grunt"
   },
   "author": "Stewart MacKenzie-Leigh",
   "license": "ISC",
