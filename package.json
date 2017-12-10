@@ -1,8 +1,9 @@
 {
   "name": "stucumber",
-  "version": "1.0.0",
-  "description": "Parse gherkin and provide a cucumber-like environment",
+  "version": "0.1.0",
+  "description": "A Gherkin parser and Cucumber-like implementation for JavaScript",
   "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
   "scripts": {
     "test": "jest --config=jest.config.json --no-cache"
   },

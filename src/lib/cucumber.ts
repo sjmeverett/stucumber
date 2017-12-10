@@ -122,5 +122,3 @@ export default class Cucumber {
     return this._createWorld ? this._createWorld() : null;
   }
 }
-
-export const cucumber = new Cucumber();

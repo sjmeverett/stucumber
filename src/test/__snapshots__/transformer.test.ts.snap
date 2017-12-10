@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`transformer should transform an AST using given functions 1`] = `
+"describe(\\"test feature\\", () => {it(\\"test scenario\\", () => {cucumber.rule(\\"test rule\\");
+cucumber.rule(\\"test rule 2\\");});});"
+`;
