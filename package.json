@@ -1,0 +1,23 @@
+{
+  "name": "stucumber",
+  "version": "1.0.0",
+  "description": "Parse gherkin and provide a cucumber-like environment",
+  "main": "dist/lib/index.js",
+  "scripts": {
+    "test": "jest --config=jest.config.json --no-cache"
+  },
+  "author": "Stewart MacKenzie-Leigh",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^21.1.8",
+    "@types/node": "^8.0.57",
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-peg": "^2.0.1",
+    "grunt-ts": "^6.0.0-beta.17",
+    "jest": "^21.2.1",
+    "load-grunt-tasks": "^3.5.2",
+    "ts-jest": "^21.2.4",
+    "typescript": "^2.6.2"
+  }
+}
