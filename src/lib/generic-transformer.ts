@@ -16,14 +16,32 @@ export default class GenericTransformer extends Transformer<any> {
     super();
   }
 
+  protected transformFile(filename: string, file) {
+    const {code, map} = new SourceNode(1, 1, filename, [
+      `const {cucumber} = require("gherkin-jest");`,
+      `const co = require("co");`,
+      file
+    ]).toStringWithSourceMap({file: filename});
+
+    return (
+      code +
+      '\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,' +
+      Buffer.from(map.toString(), 'utf8').toString('base64')
+    );
+  }
+
   protected transformFeature(filename: string, feature: Feature, scenarios) {
     return new SourceNode(feature.name.location.line, feature.name.location.column, filename, [
       this.applyAttributes(this.options.featureFn, feature.annotations),
       `("Feature: " + `,
       JSON.stringify(feature.name.value),
       `, () => {`,
-      `${this.options.beforeAllFn}(() => cucumber.enterFeature(${JSON.stringify(feature.annotations)}));`,
-      `${this.options.afterAllFn}(() => cucumber.exitFeature(${JSON.stringify(feature.annotations)}));`,
+      `${this.options.beforeAllFn}(() => cucumber.enterFeature(${JSON.stringify(
+        feature.annotations
+      )}));`,
+      `${this.options.afterAllFn}(() => cucumber.exitFeature(${JSON.stringify(
+        feature.annotations
+      )}));`,
       new SourceNode(feature.name.location.line, feature.name.location.column, filename, scenarios),
       `});`
     ]);
@@ -61,14 +79,13 @@ export default class GenericTransformer extends Transformer<any> {
 
   protected applyAttributes(name: string, attributes: string[]) {
     let attribute = '';
-  
+
     if (attributes.indexOf('skip') > -1) {
       attribute = '.skip';
     } else if (attributes.indexOf('only') > -1) {
       attribute = '.only';
     }
-  
+
     return name + attribute;
   }
-  
 }
