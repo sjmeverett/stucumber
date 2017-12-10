@@ -20,5 +20,19 @@
     "load-grunt-tasks": "^3.5.2",
     "ts-jest": "^21.2.4",
     "typescript": "^2.6.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stewartml/stucumber.git"
+  },
+  "keywords": [
+    "cucumber",
+    "gherkin",
+    "test",
+    "testing"
+  ],
+  "bugs": {
+    "url": "https://github.com/stewartml/stucumber/issues"
+  },
+  "homepage": "https://github.com/stewartml/stucumber#readme"
 }
