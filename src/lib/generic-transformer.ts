@@ -5,15 +5,25 @@ import {Feature, Scenario, Clause} from './parser';
 const SourceNode = require('source-map').SourceNode;
 
 export interface GenericTransformerOptions {
-  featureFn: string;
+  featureFn?: string;
   scenarioFn: string;
   beforeAllFn: string;
   afterAllFn: string;
+  getFeatureName?: (feature: Feature) => string;
+  getScenarioName?: (feature: Feature, scenario: Scenario) => string;
 }
 
 export default class GenericTransformer extends Transformer<any> {
-  constructor(protected options: GenericTransformerOptions) {
+  protected options: GenericTransformerOptions;
+
+  constructor(options: GenericTransformerOptions) {
     super();
+
+    this.options = {
+      getFeatureName: (feature: Feature) => 'Feature: ' + feature.name.value,
+      getScenarioName: (feature: Feature, scenario: Scenario) => scenario.name.value,
+      ...options
+    };
   }
 
   protected transformFile(filename: string, file) {
@@ -31,27 +41,40 @@ export default class GenericTransformer extends Transformer<any> {
   }
 
   protected transformFeature(filename: string, feature: Feature, scenarios) {
-    return new SourceNode(feature.name.location.line, feature.name.location.column, filename, [
-      this.applyAttributes(this.options.featureFn, feature.annotations),
-      `("Feature: " + `,
-      JSON.stringify(feature.name.value),
-      `, () => {`,
+    let chunks = [
       `${this.options.beforeAllFn}(() => cucumber.enterFeature(${JSON.stringify(
         feature.annotations
       )}));`,
       `${this.options.afterAllFn}(() => cucumber.exitFeature(${JSON.stringify(
         feature.annotations
       )}));`,
-      new SourceNode(feature.name.location.line, feature.name.location.column, filename, scenarios),
-      `});`
-    ]);
+      ...scenarios
+    ];
+
+    if (this.options.featureFn) {
+      chunks = [
+        this.applyAttributes(this.options.featureFn, feature.annotations),
+        `(`,
+        JSON.stringify(this.options.getFeatureName(feature)),
+        `, () => {`,
+        ...chunks,
+        `});`
+      ];
+    }
+
+    return new SourceNode(
+      feature.name.location.line,
+      feature.name.location.column,
+      filename,
+      chunks
+    );
   }
 
   protected transformScenario(filename: string, feature: Feature, scenario: Scenario, rules) {
     return new SourceNode(scenario.name.location.line, scenario.name.location.column, filename, [
       this.applyAttributes(this.options.scenarioFn, scenario.annotations),
       `(`,
-      JSON.stringify(scenario.name.value),
+      JSON.stringify(this.options.getScenarioName(feature, scenario)),
       `, () => {`,
       `const world = cucumber.createWorld();`,
       `return cucumber.enterScenario(world, `,

@@ -1,7 +1,8 @@
 import GenericTransformer from '../lib/generic-transformer';
+import { readFileSync } from 'fs';
 
 describe('transformer', () => {
-  it('should transform the AST', () => {
+  it('should transform the AST jest-style', () => {
     const transformer = new GenericTransformer({
       featureFn: 'describe',
       scenarioFn: 'it',
@@ -26,4 +27,17 @@ describe('transformer', () => {
 
     expect(result).toMatchSnapshot();
   });
+
+  it('should transform the AST ava style', () => {
+    const transformer = new GenericTransformer({
+      scenarioFn: 'test',
+      beforeAllFn: 'test.before',
+      afterAllFn: 'test.after',
+      getScenarioName: (feature, scenario) => `${feature.name.value} > ${scenario.name.value}`
+    });
+
+    const result = transformer.transform('test.feature', readFileSync(__dirname + '/scenario.feature', 'utf8'));
+
+    expect(result).toMatchSnapshot();
+  })
 });
