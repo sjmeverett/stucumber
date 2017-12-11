@@ -23,7 +23,7 @@ export default class GenericTransformer extends Transformer<any> {
     this.options = {
       getFeatureName: (feature: Feature) => 'Feature: ' + feature.name.value,
       getScenarioName: (feature: Feature, scenario: Scenario) => scenario.name.value,
-      preamble: '',
+      preamble: 'const {cucumber} = require("stucumber");',
       ...options
     };
   }
