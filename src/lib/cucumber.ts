@@ -1,3 +1,5 @@
+import DataTable from "./data-table";
+
 export interface RuleHandler {
   (world: any, ...args: any[]): any;
 }
@@ -106,12 +108,18 @@ export default class Cucumber {
     this._createWorld = _createWorld;
   }
 
-  rule(world: any, str: string): any {
+  rule(world: any, str: string, data?: string[][]): any {
     for (const rule of this.rules) {
       const match = str.match(rule.regex);
 
       if (match) {
-        return Promise.resolve(rule.handler(world, ...match.slice(1)));
+        const args = [world, ...match.slice(1)];
+
+        if (data) {
+          args.push(new DataTable(data));
+        }
+
+        return Promise.resolve(rule.handler.apply(this, args));
       }
     }
 

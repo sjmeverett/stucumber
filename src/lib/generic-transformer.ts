@@ -1,5 +1,5 @@
 import Transformer from './transformer';
-import {Feature, Scenario, Clause} from './parser';
+import {Feature, Scenario, Clause, Rule} from './parser';
 
 // TODO: upgrade when new version is published, source-map types are currently fucked
 const SourceNode = require('source-map').SourceNode;
@@ -89,12 +89,14 @@ export default class GenericTransformer extends Transformer<any> {
     ]);
   }
 
-  protected transformRule(filename: string, feature: Feature, scenario: Scenario, rule: Clause) {
+  protected transformRule(filename: string, feature: Feature, scenario: Scenario, rule: Rule) {
     return [
       `.then(() => `,
       new SourceNode(rule.location.line, rule.location.column, filename, [
         `cucumber.rule(world, `,
         JSON.stringify(rule.value),
+        ', ',
+        rule.data ? JSON.stringify(rule.data) : 'null',
         `)`
       ]),
       `)`

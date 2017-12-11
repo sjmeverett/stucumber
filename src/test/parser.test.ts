@@ -12,9 +12,13 @@ describe("Parser", () => {
     expect(result).toMatchSnapshot();
   });
 
-
   it("should parse a scenario with annotations", () => {
     const result = parse(readFileSync(__dirname + '/annotations.feature', 'utf8'));
     expect(result).toMatchSnapshot();
   });
+
+  it("should parse a scenario with data tables", () => {
+    const result = parse(readFileSync(__dirname + '/data-table.feature', 'utf8'));
+    expect(result).toMatchSnapshot();
+  });  
 });
