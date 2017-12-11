@@ -1,5 +1,5 @@
 import Transformer from './transformer';
-import {Feature, Scenario, Clause, Rule} from './parser';
+import {Feature, Scenario, Clause, Annotation, Rule} from './parser';
 
 // TODO: upgrade when new version is published, source-map types are currently fucked
 const SourceNode = require('source-map').SourceNode;
@@ -103,12 +103,12 @@ export default class GenericTransformer extends Transformer<any> {
     ];
   }
 
-  protected applyAttributes(name: string, attributes: string[]) {
+  protected applyAttributes(name: string, attributes: Annotation[]) {
     let attribute = '';
 
-    if (attributes.indexOf('skip') > -1) {
+    if (attributes.find((attr) => attr.name === 'skip' && attr.arguments.length === 0)) {
       attribute = '.skip';
-    } else if (attributes.indexOf('only') > -1) {
+    } else if (attributes.find((attr) => attr.name === 'only' && attr.arguments.length === 0)) {
       attribute = '.only';
     }
 

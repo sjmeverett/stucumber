@@ -56,7 +56,9 @@ Object {
 exports[`Parser should parse a scenario with annotations 1`] = `
 Object {
   "annotations": Array [
-    "annotation1",
+    Object {
+      "name": "annotation1",
+    },
   ],
   "name": Object {
     "location": Object {
@@ -69,14 +71,26 @@ Object {
   "scenarios": Array [
     Object {
       "annotations": Array [
-        "annotation2",
-        "annotation3",
+        Object {
+          "name": "annotation2",
+        },
+        Object {
+          "arguments": Array [
+            "foo",
+            1,
+            Array [
+              true,
+              false,
+            ],
+          ],
+          "name": "annotationWithArgs",
+        },
       ],
       "name": Object {
         "location": Object {
           "column": 12,
           "line": 5,
-          "offset": 67,
+          "offset": 99,
         },
         "value": "this is a test",
       },
@@ -85,7 +99,7 @@ Object {
           "location": Object {
             "column": 6,
             "line": 6,
-            "offset": 88,
+            "offset": 120,
           },
           "table": Array [],
           "value": "a thing",

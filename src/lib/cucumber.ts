@@ -1,11 +1,12 @@
 import DataTable from "./data-table";
+import { Annotation } from "./parser";
 
 export interface RuleHandler {
   (world: any, ...args: any[]): any;
 }
 
 export interface HookHandler {
-  (world?: any, attributes?: string[]): any;
+  (world?: any, annotations?: string[]): any;
 }
 
 export enum HookType {
@@ -51,28 +52,28 @@ export default class Cucumber {
     this.hooks.push({ type, handler });
   }
 
-  private runHook(type: HookType, world?: any, attributes?: string[]) {
+  private runHook(type: HookType, world?: any, annotations?: Annotation[]) {
     return Promise.all(
       this.hooks
         .filter(hook => hook.type === type)
-        .map(hook => hook.handler.call(this, world, attributes))
+        .map(hook => hook.handler.call(this, world, annotations))
     );
   }
 
-  enterFeature(attributes: string[]) {
-    return this.runHook(HookType.BeforeFeatures, null, attributes);
+  enterFeature(annotations: Annotation[]) {
+    return this.runHook(HookType.BeforeFeatures, null, annotations);
   }
 
-  enterScenario(world: any, attributes: string[]) {
-    return this.runHook(HookType.BeforeScenarios, world, attributes);
+  enterScenario(world: any, annotations: Annotation[]) {
+    return this.runHook(HookType.BeforeScenarios, world, annotations);
   }
 
-  exitFeature(attributes: string[]) {
-    return this.runHook(HookType.AfterFeatures, null, attributes);
+  exitFeature(annotations: Annotation[]) {
+    return this.runHook(HookType.AfterFeatures, null, annotations);
   }
 
-  exitScenario(world: any, attributes: string[]) {
-    return this.runHook(HookType.AfterScenarios, world, attributes);
+  exitScenario(world: any, annotations: Annotation[]) {
+    return this.runHook(HookType.AfterScenarios, world, annotations);
   }
 
   private compileTemplate(match: string, handler: RuleHandler) {

@@ -29,8 +29,10 @@ Feature
 	{ return { name, scenarios, annotations } }
 
 Annotation 
-  = TAt attribute:Keyword _
-  { return attribute }
+  = TAt attribute:Keyword "(" args:[^)]* ")" _
+  { return { name: attribute, arguments: JSON.parse('[' + args.join('') + ']') } }
+  / TAt attribute:Keyword _
+  { return { name: attribute } }
 
 Annotations
   = Annotation*

@@ -2,13 +2,18 @@
 export interface Feature {
   name: Clause;
   scenarios: Scenario[];
-  annotations: string[];
+  annotations: Annotation[];
+}
+
+export interface Annotation {
+  name: string;
+  arguments: any[];
 }
 
 export interface Scenario {
   name: Clause;
-  rules: Rule[];
-  annotations: string[];
+  rules: Clause[];
+  annotations: Annotation[];
 }
 
 export interface Rule extends Clause {
