@@ -1,4 +1,4 @@
-import {Feature, Scenario, Clause, parse} from './parser';
+import {Feature, Scenario, Clause, parse, Rule} from './parser';
 
 export default abstract class Transformer<T> {
   protected abstract transformFeature(filename: string, feature: Feature, scenarios: T[]): T;
@@ -14,7 +14,7 @@ export default abstract class Transformer<T> {
     filename: string,
     feature: Feature,
     scenario: Scenario,
-    rule: Clause
+    rule: Rule
   ): T;
   
   protected abstract transformFile(filename: string, file: T): string;

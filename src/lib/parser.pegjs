@@ -72,8 +72,8 @@ Rules
   { return rules }
 
 Rule
-  = _ Clause rule:String NL
-  { return rule }
+  = _ Clause rule:String NL table:Table
+  { return Object.assign({}, rule, {table}) }
 
 Clause
   = TGiven
@@ -150,7 +150,9 @@ NL = "\n"
 _ = WS Comment _
   / WS
 
-Comment = "//" String NL
+Comment
+  = "//" [^\n]* NL
+  / "#" [^\n]* NL
 
 WS "whitespace"
   = [ \t\n\r]*

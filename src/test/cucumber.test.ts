@@ -1,4 +1,5 @@
 import Cucumber, { HookType } from '../lib/cucumber';
+import DataTable from '../lib/data-table';
 
 describe('Cucumber', () => {
   it('should pick the right rule', () => {
@@ -14,7 +15,7 @@ describe('Cucumber', () => {
 
     cucumber.rule(null, 'I have 3');
     expect(rule1).toHaveBeenCalledTimes(1);
-    expect(rule1).toHaveBeenCalledWith(null, "3");
+    expect(rule1).toHaveBeenCalledWith(null, '3');
     expect(rule2).not.toHaveBeenCalled();
     expect(rule3).not.toHaveBeenCalled();
   });
@@ -80,4 +81,14 @@ describe('Cucumber', () => {
     expect(hook).toHaveBeenCalledWith(1, ['foo']);
     expect(dummy).not.toHaveBeenCalled();
   });
+
+  it('should wrap data arg in DataTable', () => {
+    const cucumber = new Cucumber();
+
+    cucumber.defineRule('foo', (world, data) => {
+      expect(data).toBeInstanceOf(DataTable);
+    });
+
+    cucumber.rule(null, 'foo', [['1', '2']]);
+  })
 });
