@@ -9,6 +9,7 @@ export interface GenericTransformerOptions {
   scenarioFn: string;
   beforeAllFn: string;
   afterAllFn: string;
+  preamble?: string;
   getFeatureName?: (feature: Feature) => string;
   getScenarioName?: (feature: Feature, scenario: Scenario) => string;
 }
@@ -22,14 +23,14 @@ export default class GenericTransformer extends Transformer<any> {
     this.options = {
       getFeatureName: (feature: Feature) => 'Feature: ' + feature.name.value,
       getScenarioName: (feature: Feature, scenario: Scenario) => scenario.name.value,
+      preamble: '',
       ...options
     };
   }
 
   protected transformFile(filename: string, file) {
     const {code, map} = new SourceNode(1, 1, filename, [
-      `const {cucumber} = require("gherkin-jest");`,
-      `const co = require("co");`,
+      this.options.preamble,
       file
     ]).toStringWithSourceMap({file: filename});
 
