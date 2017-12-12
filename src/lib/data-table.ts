@@ -1,3 +1,7 @@
+export interface Hash<T> {
+  [key: string]: T
+}
+
 export default class DataTable {
   constructor(private data: string[][]) {}
 
@@ -5,7 +9,7 @@ export default class DataTable {
     return this.data;
   }
 
-  asObjects() {
+  asObjects(): Hash<string>[] {
     if (this.data.length < 1) {
       throw new Error('need at least 1 row');
     }
@@ -13,7 +17,7 @@ export default class DataTable {
     const keys = this.data[0];
 
     return this.data.slice(1).map(row => {
-      const obj = {};
+      const obj: Hash<string> = {};
 
       if (row.length !== keys.length) {
         throw new Error('rows must be the same length');
@@ -27,7 +31,9 @@ export default class DataTable {
     });
   }
 
-  asPairs<T = any>(mapValue?: (value: string, key?: string) => T): {[key: string]: T} {
+  asKeyValuePairs(): Hash<string>;
+  asKeyValuePairs<T>(mapValue: (value: string, key?: string) => T): Hash<T>;
+  asKeyValuePairs<T>(mapValue?: (value: string, key?: string) => T) {
     const obj = {};
 
     this.data.forEach((row) => {
@@ -40,5 +46,17 @@ export default class DataTable {
     });
 
     return obj;
+  }
+
+  asList(): string[]
+  asList<T>(mapValue: (value: string, i?: number) => T): T[]
+  asList<T>(mapValue?: (value: string, i?: number) => T) {
+    return this.data.map((row) => {
+      if (row.length !== 1) {
+        throw new Error('expected a table with exactly one column');
+      }
+      const cell = row[0];
+      return mapValue ? mapValue(cell) : cell;
+    });
   }
 }
