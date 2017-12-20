@@ -27,7 +27,7 @@ describe('DataTable', () => {
   });
 
   it('should return a list with the values mapped', () => {
-    const table = new DataTable([['1', '2', '3']]);
+    const table = new DataTable([['1'], ['2'], ['3']]);
     expect(table.asList((str) => parseInt(str))).toEqual([1, 2, 3]);
   });
 });
