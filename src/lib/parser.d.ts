@@ -12,7 +12,7 @@ export interface Scenario {
 }
 
 export interface Rule extends Clause {
-  data: any;
+  data?: any;
 }
 
 export interface Clause {
