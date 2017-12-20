@@ -1,3 +1,5 @@
+import DataTable from "./data-table";
+
 export interface RuleHandler {
   (world: any, ...args: any[]): any;
 }
@@ -7,10 +9,10 @@ export interface HookHandler {
 }
 
 export enum HookType {
-  BeforeAll,
-  BeforeEach,
-  AfterAll,
-  AfterEach
+  BeforeFeatures,
+  BeforeScenarios,
+  AfterFeatures,
+  AfterScenarios
 }
 
 interface Hook {
@@ -58,19 +60,19 @@ export default class Cucumber {
   }
 
   enterFeature(attributes: string[]) {
-    return this.runHook(HookType.BeforeAll, null, attributes);
+    return this.runHook(HookType.BeforeFeatures, null, attributes);
   }
 
   enterScenario(world: any, attributes: string[]) {
-    return this.runHook(HookType.BeforeEach, world, attributes);
+    return this.runHook(HookType.BeforeScenarios, world, attributes);
   }
 
   exitFeature(attributes: string[]) {
-    return this.runHook(HookType.AfterAll, null, attributes);
+    return this.runHook(HookType.AfterFeatures, null, attributes);
   }
 
   exitScenario(world: any, attributes: string[]) {
-    return this.runHook(HookType.AfterEach, world, attributes);
+    return this.runHook(HookType.AfterScenarios, world, attributes);
   }
 
   private compileTemplate(match: string, handler: RuleHandler) {
@@ -106,12 +108,18 @@ export default class Cucumber {
     this._createWorld = _createWorld;
   }
 
-  rule(world: any, str: string): any {
+  rule(world: any, str: string, data?: string[][]): any {
     for (const rule of this.rules) {
       const match = str.match(rule.regex);
 
       if (match) {
-        return Promise.resolve(rule.handler(world, ...match.slice(1)));
+        const args = [world, ...match.slice(1)];
+
+        if (data) {
+          args.push(new DataTable(data));
+        }
+
+        return Promise.resolve(rule.handler.apply(this, args));
       }
     }
 

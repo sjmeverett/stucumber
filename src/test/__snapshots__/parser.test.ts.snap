@@ -87,7 +87,55 @@ Object {
             "line": 6,
             "offset": 88,
           },
+          "table": Array [],
           "value": "a thing",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Parser should parse a scenario with data tables 1`] = `
+Object {
+  "annotations": Array [],
+  "name": Object {
+    "location": Object {
+      "column": 9,
+      "line": 1,
+      "offset": 8,
+    },
+    "value": "data tables",
+  },
+  "scenarios": Array [
+    Object {
+      "annotations": Array [],
+      "name": Object {
+        "location": Object {
+          "column": 12,
+          "line": 2,
+          "offset": 32,
+        },
+        "value": "data table",
+      },
+      "rules": Array [
+        Object {
+          "location": Object {
+            "column": 10,
+            "line": 3,
+            "offset": 53,
+          },
+          "table": Array [
+            Array [
+              "datum1",
+              "datum2",
+            ],
+            Array [
+              "datum3",
+              "datum4",
+            ],
+          ],
+          "value": "I have data",
         },
       ],
     },
@@ -101,8 +149,8 @@ Object {
   "name": Object {
     "location": Object {
       "column": 9,
-      "line": 1,
-      "offset": 8,
+      "line": 2,
+      "offset": 30,
     },
     "value": "foo",
   },
@@ -112,8 +160,8 @@ Object {
       "name": Object {
         "location": Object {
           "column": 12,
-          "line": 6,
-          "offset": 75,
+          "line": 8,
+          "offset": 117,
         },
         "value": "this is a test",
       },
@@ -121,49 +169,55 @@ Object {
         Object {
           "location": Object {
             "column": 10,
-            "line": 7,
-            "offset": 100,
+            "line": 9,
+            "offset": 142,
           },
+          "table": Array [],
           "value": "that I am testing",
         },
         Object {
           "location": Object {
             "column": 8,
-            "line": 8,
-            "offset": 126,
+            "line": 10,
+            "offset": 168,
           },
+          "table": Array [],
           "value": "I am still testing",
         },
         Object {
           "location": Object {
             "column": 9,
-            "line": 9,
-            "offset": 154,
+            "line": 11,
+            "offset": 196,
           },
+          "table": Array [],
           "value": "I test",
         },
         Object {
           "location": Object {
             "column": 8,
-            "line": 10,
-            "offset": 169,
+            "line": 12,
+            "offset": 211,
           },
+          "table": Array [],
           "value": "continue testing",
         },
         Object {
           "location": Object {
             "column": 9,
-            "line": 11,
-            "offset": 195,
+            "line": 13,
+            "offset": 237,
           },
+          "table": Array [],
           "value": "I want to test",
         },
         Object {
           "location": Object {
             "column": 8,
-            "line": 12,
-            "offset": 218,
+            "line": 14,
+            "offset": 260,
           },
+          "table": Array [],
           "value": "test",
         },
       ],
