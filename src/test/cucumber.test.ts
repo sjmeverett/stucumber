@@ -38,8 +38,8 @@ describe('Cucumber', () => {
     const cucumber = new Cucumber();
     const hook = jest.fn();
     const dummy = jest.fn();
-    cucumber.addHook(HookType.BeforeAll, hook);
-    cucumber.addHook(HookType.AfterAll, dummy);
+    cucumber.addHook(HookType.BeforeFeatures, hook);
+    cucumber.addHook(HookType.AfterFeatures, dummy);
 
     cucumber.enterFeature(['foo']);
     expect(hook).toHaveBeenCalledWith(null, ['foo']);
@@ -50,8 +50,8 @@ describe('Cucumber', () => {
     const cucumber = new Cucumber();
     const hook = jest.fn();
     const dummy = jest.fn();
-    cucumber.addHook(HookType.BeforeEach, hook);
-    cucumber.addHook(HookType.AfterAll, dummy);
+    cucumber.addHook(HookType.BeforeScenarios, hook);
+    cucumber.addHook(HookType.AfterFeatures, dummy);
 
     cucumber.enterScenario(1, ['foo']);
     expect(hook).toHaveBeenCalledWith(1, ['foo']);
@@ -62,8 +62,8 @@ describe('Cucumber', () => {
     const cucumber = new Cucumber();
     const hook = jest.fn();
     const dummy = jest.fn();
-    cucumber.addHook(HookType.AfterAll, hook);
-    cucumber.addHook(HookType.BeforeAll, dummy);
+    cucumber.addHook(HookType.AfterFeatures, hook);
+    cucumber.addHook(HookType.BeforeFeatures, dummy);
 
     cucumber.exitFeature(['foo']);
     expect(hook).toHaveBeenCalledWith(null, ['foo']);
@@ -74,8 +74,8 @@ describe('Cucumber', () => {
     const cucumber = new Cucumber();
     const hook = jest.fn();
     const dummy = jest.fn();
-    cucumber.addHook(HookType.AfterEach, hook);
-    cucumber.addHook(HookType.BeforeAll, dummy);
+    cucumber.addHook(HookType.AfterScenarios, hook);
+    cucumber.addHook(HookType.BeforeFeatures, dummy);
 
     cucumber.exitScenario(1, ['foo']);
     expect(hook).toHaveBeenCalledWith(1, ['foo']);
