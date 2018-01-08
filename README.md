@@ -81,74 +81,6 @@ describe('Feature: calculator', () => {
 })
 ```
 
-## API
-
-### `Cucumber` class
-
-The JavaScript behind the Gherkin, for defining rules etc.
-
-```js
-import { Cucumber } from 'stucumber';
-```
-
-The methods below are meant to be called by people writing tests.  The other methods on
-the class are called by translated gherkin tests.
-
-**`defineCreateWorld(_createWorld: () => any): void`**
-
-Defines a factory function for creating a "world", which is passed to every rule.  
-This should be some object which holds the context of your test.
-
-Parameters:
-  
-  * `_createWorld` - a function which returns an instance of a world, whatever
-  that might be
-
-**`defineRule(match: string, handler: RuleHandler): void`**\
-**`defineRule(match: RegExp, handler: RuleHandler): void`**
-
-Defines a rule. All rules, whether `Given`, `When`, `Then` or `And` are treated
-the same way.  When a rule matches `match`, the `handler` function will be called.
-
-Parameters:
-
-  * `match` - either a string or regex that defines what the rule will match
-  * `handler` - a function to execute when the rule is matched (see
-  [`RuleHandler`](#rulehandler))
-
-The first argument to the handler is always the `world` instance.
-
-If `match` is a string, it can contain placeholders for matched arguments (see
-[template strings](#template-strings)).  The values matched by the placeholders
-will be passed to the handler in the order they appear in the string.
-
-If `match` is a `RegExp`, any capturing groups will be passed as separate arguments
-to the handler.
-
-**`addHook(type: HookType, handler: HookHandler): void`**
-
-Adds a hook, i.e., a function which will run before or after features or
-scenarios.
-
-Parameters:
-
-  * `type` - the type of hook, see [`HookType`](#hooks)
-  * `handler` - the function that will run, see [`HookHandler`](#hooks)
-
-### `RuleHandler`
-
-```js
-import {RuleHandler} from 'stucumber';
-```
-
-Interface representing a handler function for a rule.  The first argument is `world`, the
-value returned from the `createWorld` function.  Subsequent arguments are the values
-for the capturing groups (or placeholders) defined for the rule.  The final argument is a
-the data table if defined.
-
-
-## Additional features
-
 ### Template strings
 
 You can write your rules using the template string style notation:
@@ -274,7 +206,165 @@ cucumber.defineRule('I have a list', (world, table) => {
 });
 ```
 
-See [`DataTable`](#datatable) for more information.
+See the [`DataTable` class](#datatable-class) for more information.
+
+### Background steps
+
+You can define steps that will run before each scenario, using the `Background:` keyword:
+
+```gherkin
+Background:
+  Given I log in as joe@example.com
+  And I go to the page
+
+Scenario:
+  Given I do a thing
+```
+
+The steps under `Background:` will be prepended to each scenario, and will use the same world as that scenario.
+
+## API
+
+### `Cucumber` class
+
+The JavaScript behind the Gherkin, for defining rules etc.
+
+```js
+import { Cucumber } from 'stucumber';
+```
+
+The methods below are meant to be called by people writing tests.  The other methods on
+the class are called by translated gherkin tests.
+
+**`defineCreateWorld(_createWorld: () => any): void`**
+
+Defines a factory function for creating a "world", which is passed to every rule.  
+This should be some object which holds the context of your test.
+
+Parameters:
+  
+  * `_createWorld` - a function which returns an instance of a world, whatever
+  that might be
+
+**`defineRule(match: string, handler: RuleHandler): void`**\
+**`defineRule(match: RegExp, handler: RuleHandler): void`**
+
+Defines a rule. All rules, whether `Given`, `When`, `Then` or `And` are treated
+the same way.  When a rule matches `match`, the `handler` function will be called.
+
+Parameters:
+
+  * `match` - either a string or regex that defines what the rule will match
+  * `handler` - a function to execute when the rule is matched (see
+  [`RuleHandler`](#rulehandler))
+
+The first argument to the handler is always the `world` instance.
+
+If `match` is a string, it can contain placeholders for matched arguments (see
+[template strings](#template-strings)).  The values matched by the placeholders
+will be passed to the handler in the order they appear in the string.
+
+If `match` is a `RegExp`, any capturing groups will be passed as separate arguments
+to the handler.
+
+**`addHook(type: HookType, handler: HookHandler): void`**
+
+Adds a hook, i.e., a function which will run before or after features or
+scenarios.
+
+Parameters:
+
+  * `type` - the type of hook, see [`HookType`](#hooks)
+  * `handler` - the function that will run, see [`HookHandler`](#hooks)
+
+### `RuleHandler`
+
+```js
+import {RuleHandler} from 'stucumber';
+```
+
+Interface representing a handler function for a rule.  The first argument is `world`, the
+value returned from the `createWorld` function.  Subsequent arguments are the values
+for the capturing groups (or placeholders) defined for the rule.  The final argument is a
+the data table if defined.
+
+### `DataTable` class
+
+Represents a data table.
+
+**`raw(): string[][]`**
+
+Returns the raw table data, as an array of rows of data, themselves arrays of cells.
+
+**`asObjects(): Hash<string>[]`**
+
+Treats the first row as a header containing the names of the columns, and returns
+an array of objects based on those names.  For example, given the following table:
+
+```
+| foo | bar |
+| 1   | 2   |
+| 3   | 4   |
+```
+
+The following value will be returned:
+
+```js
+[
+  {foo: '1', bar: '2'},
+  {foo: '3', bar: '4'}
+]
+```
+
+**`asKeyValuePairs(): Hash<string>`**
+**`asKeyValuePairs<T>(mapValue: (value: string, key?: string) => T): Hash<T>`**
+
+Expects a 2 column table, where the first column represents keys and the second
+represents values, and returns an object containing that data.
+
+For example, given the following table:
+
+```
+| foo | 1  |
+| bar | 2  |
+| baz | 3  |
+```
+
+The following value will be returned:
+
+```js
+{foo: '1', bar: '2', baz: '3'}
+```
+
+Optionally, you can provide a function to convert the values:
+
+```js
+const obj = data.asKeyValuePairs((value) => parseInt(value));
+```
+
+**`asList(): string[]`**
+**`asList<T>(mapValue: (value: string, i?: number) => T): T[]`**
+
+Expects a 1 column table and returns the values as an array.  Optionally, you can
+provide a function to convert the values, e.g.:
+
+```js
+const list = data.asList((value) => parseInt(value));
+```
+
+Given the following data table:
+
+```
+| 1 |
+| 2 |
+| 3 |
+```
+
+The following value will be returned:
+
+```
+[1, 2, 3]
+```
 
 ## Licence
 
