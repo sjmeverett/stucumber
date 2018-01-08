@@ -366,6 +366,21 @@ The following value will be returned:
 [1, 2, 3]
 ```
 
+### Background steps
+
+You can define steps that will run before each scenario, using the `Background:` keyword:
+
+```gherkin
+Background:
+  Given I log in as joe@example.com
+  And I go to the page
+
+Scenario:
+  Given I do a thing
+```
+
+The steps under `Background:` will be prepended to each scenario, and will use the same world as that scenario.
+
 ## Licence
 
 ISC.  Do what you like, don't sue me.  Please consider sharing improvements you make.
