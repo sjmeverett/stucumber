@@ -12,12 +12,15 @@ describe('transformer', () => {
 
     const result = transformer.transform('test.feature', {
       name: {value: 'test feature', location: {line: 1, column: 1, offset: 0}},
+      background: [
+        {value: 'background', location: {line: 2, column: 1, offset: 0}}
+      ],
       scenarios: [
         {
-          name: {value: 'test scenario', location: {line: 2, column: 1, offset: 0}},
+          name: {value: 'test scenario', location: {line: 3, column: 1, offset: 0}},
           rules: [
-            {value: 'test rule', location: {line: 3, column: 1, offset: 0}},
-            {value: 'test rule 2', location: {line: 4, column: 1, offset: 0}}
+            {value: 'test rule', location: {line: 4, column: 1, offset: 0}},
+            {value: 'test rule 2', location: {line: 5, column: 1, offset: 0}}
           ],
           annotations: []
         }
@@ -36,7 +39,7 @@ describe('transformer', () => {
       getScenarioName: (feature, scenario) => `${feature.name.value} > ${scenario.name.value}`
     });
 
-    const result = transformer.transform('test.feature', readFileSync(__dirname + '/scenario.feature', 'utf8'));
+    const result = transformer.transform('test.feature', readFileSync(__dirname + '/background.feature', 'utf8'));
 
     expect(result).toMatchSnapshot();
   })

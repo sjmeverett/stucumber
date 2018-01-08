@@ -1,8 +1,76 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Parser should parse a feature with a background 1`] = `
+Object {
+  "annotations": Array [],
+  "background": Array [
+    Object {
+      "location": Object {
+        "column": 10,
+        "line": 3,
+        "offset": 49,
+      },
+      "table": Array [],
+      "value": "a thing",
+    },
+    Object {
+      "location": Object {
+        "column": 9,
+        "line": 4,
+        "offset": 66,
+      },
+      "table": Array [],
+      "value": "I do a thing",
+    },
+    Object {
+      "location": Object {
+        "column": 9,
+        "line": 5,
+        "offset": 88,
+      },
+      "table": Array [],
+      "value": "something happens",
+    },
+  ],
+  "name": Object {
+    "location": Object {
+      "column": 9,
+      "line": 1,
+      "offset": 8,
+    },
+    "value": "background steps",
+  },
+  "scenarios": Array [
+    Object {
+      "annotations": Array [],
+      "name": Object {
+        "location": Object {
+          "column": 12,
+          "line": 7,
+          "offset": 119,
+        },
+        "value": "this is a test",
+      },
+      "rules": Array [
+        Object {
+          "location": Object {
+            "column": 10,
+            "line": 8,
+            "offset": 144,
+          },
+          "table": Array [],
+          "value": "something",
+        },
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Parser should parse a scenario outline 1`] = `
 Object {
   "annotations": Array [],
+  "background": null,
   "name": Object {
     "location": Object {
       "column": 9,
@@ -60,6 +128,7 @@ Object {
       "name": "annotation1",
     },
   ],
+  "background": null,
   "name": Object {
     "location": Object {
       "column": 9,
@@ -113,6 +182,7 @@ Object {
 exports[`Parser should parse a scenario with data tables 1`] = `
 Object {
   "annotations": Array [],
+  "background": null,
   "name": Object {
     "location": Object {
       "column": 9,
@@ -160,6 +230,7 @@ Object {
 exports[`Parser should parse a standard scenario 1`] = `
 Object {
   "annotations": Array [],
+  "background": null,
   "name": Object {
     "location": Object {
       "column": 9,

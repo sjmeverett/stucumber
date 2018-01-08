@@ -20,5 +20,10 @@ describe("Parser", () => {
   it("should parse a scenario with data tables", () => {
     const result = parse(readFileSync(__dirname + '/data-table.feature', 'utf8'));
     expect(result).toMatchSnapshot();
+  });
+
+  it("should parse a feature with a background", () => {
+    const result = parse(readFileSync(__dirname + '/background.feature', 'utf8'));
+    expect(result).toMatchSnapshot();
   });  
 });

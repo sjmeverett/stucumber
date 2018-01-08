@@ -23,6 +23,7 @@ export default abstract class Transformer<T> {
   transform(filename: string, feature: Feature);
   transform(filename: string, source: string | Feature) {
     const feature = typeof source === 'string' ? parse(source) : source;
+    const background = feature.background || [];
 
     return this.transformFile(
       filename,
@@ -34,7 +35,7 @@ export default abstract class Transformer<T> {
             filename,
             feature,
             scenario,
-            scenario.rules.map((rule) => this.transformRule(filename, feature, scenario, rule))
+            [...background, ...scenario.rules].map((rule) => this.transformRule(filename, feature, scenario, rule))
           )
         )
       )

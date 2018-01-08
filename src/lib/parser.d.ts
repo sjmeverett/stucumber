@@ -3,6 +3,7 @@ export interface Feature {
   name: Clause;
   scenarios: Scenario[];
   annotations: Annotation[];
+  background?: Rule[];
 }
 
 export interface Annotation {
@@ -12,7 +13,7 @@ export interface Annotation {
 
 export interface Scenario {
   name: Clause;
-  rules: Clause[];
+  rules: Rule[];
   annotations: Annotation[];
 }
 
