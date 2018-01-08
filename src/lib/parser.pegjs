@@ -25,8 +25,8 @@
 }
 
 Feature
-  = _ annotations:Annotations TFeature name:String NL Preamble? _ scenarios:Scenarios
-	{ return { name, scenarios, annotations } }
+  = _ annotations:Annotations TFeature name:String NL Preamble? background:Background? _ scenarios:Scenarios
+	{ return { name, background, scenarios, annotations } }
 
 Annotation 
   = TAt attribute:Keyword "(" args:[^)]* ")" _
@@ -52,6 +52,10 @@ Want
 Reason
   = _ TSo reason:String NL
   { return reason }
+
+Background
+  = _ TBackground NL rules:Rules _
+  { return rules }
 
 Scenarios
   = scenarios:Scenario*
@@ -121,6 +125,7 @@ TSo
 
 TScenario = "Scenario:"
 TScenarioOutline = "Scenario Outline:"
+TBackground = "Background:"
 TGiven = "Given"
 TWhen = "When"
 TThen = "Then"
