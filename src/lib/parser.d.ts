@@ -7,7 +7,7 @@ export interface Feature {
 
 export interface Annotation {
   name: string;
-  arguments: any[];
+  arguments?: any[];
 }
 
 export interface Scenario {

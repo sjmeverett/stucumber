@@ -41,8 +41,8 @@ describe('Cucumber', () => {
     cucumber.addHook(HookType.BeforeFeatures, hook);
     cucumber.addHook(HookType.AfterFeatures, dummy);
 
-    cucumber.enterFeature(['foo']);
-    expect(hook).toHaveBeenCalledWith(null, ['foo']);
+    cucumber.enterFeature([{name: 'foo'}]);
+    expect(hook).toHaveBeenCalledWith(null, [{name: 'foo'}]);
     expect(dummy).not.toHaveBeenCalled();
   });
   
@@ -53,8 +53,8 @@ describe('Cucumber', () => {
     cucumber.addHook(HookType.BeforeScenarios, hook);
     cucumber.addHook(HookType.AfterFeatures, dummy);
 
-    cucumber.enterScenario(1, ['foo']);
-    expect(hook).toHaveBeenCalledWith(1, ['foo']);
+    cucumber.enterScenario(1, [{name: 'foo'}]);
+    expect(hook).toHaveBeenCalledWith(1, [{name: 'foo'}]);
     expect(dummy).not.toHaveBeenCalled();
   });
   
@@ -65,8 +65,8 @@ describe('Cucumber', () => {
     cucumber.addHook(HookType.AfterFeatures, hook);
     cucumber.addHook(HookType.BeforeFeatures, dummy);
 
-    cucumber.exitFeature(['foo']);
-    expect(hook).toHaveBeenCalledWith(null, ['foo']);
+    cucumber.exitFeature([{name: 'foo'}]);
+    expect(hook).toHaveBeenCalledWith(null, [{name: 'foo'}]);
     expect(dummy).not.toHaveBeenCalled();
   });
   
@@ -77,8 +77,8 @@ describe('Cucumber', () => {
     cucumber.addHook(HookType.AfterScenarios, hook);
     cucumber.addHook(HookType.BeforeFeatures, dummy);
 
-    cucumber.exitScenario(1, ['foo']);
-    expect(hook).toHaveBeenCalledWith(1, ['foo']);
+    cucumber.exitScenario(1, [{name: 'foo'}]);
+    expect(hook).toHaveBeenCalledWith(1, [{name: 'foo'}]);
     expect(dummy).not.toHaveBeenCalled();
   });
 
