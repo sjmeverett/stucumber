@@ -5,5 +5,5 @@ Feature: foo
     Then I <then>
 
     Examples:
-      | given | when | then |
-      | abc   | 123  | -£*% |
+      | given | when  | then |
+      | abc   | "1 2" | -£*% |

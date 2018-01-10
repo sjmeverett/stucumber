@@ -144,7 +144,7 @@ Object {
             "line": 4,
             "offset": 98,
           },
-          "value": "I 123",
+          "value": "I 1 2",
         },
         Object {
           "location": Object {
@@ -256,6 +256,10 @@ Object {
             Array [
               "datum3",
               "datum4",
+            ],
+            Array [
+              " 12 ",
+              "",
             ],
           ],
           "value": "I have data",

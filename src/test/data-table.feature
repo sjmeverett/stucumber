@@ -3,3 +3,4 @@ Feature: data tables
     Given I have data
       | datum1 | datum2 |
       | datum3 | datum4 |
+      | " 12 " | ""     |

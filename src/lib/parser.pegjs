@@ -137,7 +137,13 @@ TAt = "@"
 
 TTableCell
   = data:[^|\n]+
-  { return data.join('').trim() }
+  { 
+    const cell = data.join('').trim();
+
+    return /^"[^"]*"$/.test(cell)
+      ? JSON.parse(cell)
+      : cell;
+  }
 
 String
   = str:[^\n]+

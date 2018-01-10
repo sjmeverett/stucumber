@@ -206,6 +206,15 @@ cucumber.defineRule('I have a list', (world, table) => {
 });
 ```
 
+Leading and trailing spaces are automatically trimmed, which you can get round by enclosing the value in quotes.
+Because values with a quote character at the start and end will be treated as strings, if you need to keep the
+quote characters, you must put another pair of escaped quotes inside the string.
+
+```gherkin
+| " value with surrounding spaces " |
+| "\"value with quotes at start and end\"" |
+```
+
 See the [`DataTable` class](#datatable-class) for more information.
 
 ### Background steps
