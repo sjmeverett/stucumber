@@ -67,6 +67,45 @@ Object {
 }
 `;
 
+exports[`Parser should parse a feature with no newline at the end of the file 1`] = `
+Object {
+  "annotations": Array [],
+  "background": null,
+  "name": Object {
+    "location": Object {
+      "column": 9,
+      "line": 1,
+      "offset": 8,
+    },
+    "value": "background steps",
+  },
+  "scenarios": Array [
+    Object {
+      "annotations": Array [],
+      "name": Object {
+        "location": Object {
+          "column": 12,
+          "line": 3,
+          "offset": 38,
+        },
+        "value": "this is a test",
+      },
+      "rules": Array [
+        Object {
+          "location": Object {
+            "column": 10,
+            "line": 4,
+            "offset": 63,
+          },
+          "table": Array [],
+          "value": "something",
+        },
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Parser should parse a scenario outline 1`] = `
 Object {
   "annotations": Array [],

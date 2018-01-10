@@ -25,5 +25,10 @@ describe("Parser", () => {
   it("should parse a feature with a background", () => {
     const result = parse(readFileSync(__dirname + '/background.feature', 'utf8'));
     expect(result).toMatchSnapshot();
-  });  
+  });
+
+  it("should parse a feature with no newline at the end of the file", () => {
+    const result = parse(readFileSync(__dirname + '/no-newline.feature', 'utf8'));
+    expect(result).toMatchSnapshot();
+  });
 });

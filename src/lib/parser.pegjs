@@ -78,7 +78,7 @@ Rules
   { return rules }
 
 Rule
-  = _ Clause rule:String NL table:Table
+  = _ Clause rule:String EOS table:Table
   { return Object.assign({}, rule, {table}) }
 
 Clause
@@ -108,7 +108,7 @@ Table
   { return rows }
 
 TableRow
-  = _ TTableSep cells:TableCell* NL
+  = _ TTableSep cells:TableCell* EOS
   { return cells }
 
 TableCell
@@ -147,6 +147,13 @@ String
       location: location().start
     }
   }
+
+EOS
+  = NL
+  / EOF
+
+EOF
+  = !. 
 
 Keyword
   = str:[a-zA-Z0-9_-]+
