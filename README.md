@@ -217,6 +217,39 @@ quote characters, you must put another pair of escaped quotes inside the string.
 
 See the [`DataTable` class](#datatable-class) for more information.
 
+### Scenario outlines
+
+A simlar concept not to be confused with data tables is the scenario outline:
+
+```gherkin
+Scenario Outline: acceptable numbers should be accepted (<number>)
+  Given I enter the value "<number>"
+  When I click next
+  Then I should not see errors
+
+  Examples:
+  | number |
+  | 1      |
+  | 123456 |
+  | 1.2    |
+  | .123   |
+  | -1234  |
+  | -12.34 |
+  | -.1234 |
+```
+
+This allows you to write a kind of templated scenario, with gaps left for data that will be filled
+in from the "Examples" table.  This table is read as a header line defining the variable names,
+followed by rows with columnar data.
+
+The parser will output a regular scenario for each (non-header) row in the table, with any variable
+in angle brackets replaced by its value in the table for that row.
+
+This way you can test a load of different inputs with relatively little typing.
+
+Pro-tip: the parser replaces angle bracket substitutions anywhere within the scenario including the title -
+it's a good idea to put a variable substitution in the title so you can easily see which ones have failed.
+
 ### Background steps
 
 You can define steps that will run before each scenario, using the `Background:` keyword:
