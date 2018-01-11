@@ -37,6 +37,7 @@ cucumber.defineRule('I will have {int}', (world, number) => {
 });
 ```
 
+`Given`, `When`, `Then`, `And` and `*` are all synonyms, and exist only to make your code more readable.
 
 ## Documentation
 
@@ -99,6 +100,14 @@ There are 4 types that can be used as placeholders:
   * `{word}` - matches a bunch of characters up to a whitespace character (`[^\s]+`)
   * `{string}` - matches a double-quoted string and returns only the contents of the string (`"([^"]+)"`)
 
+If you give the templates names, then they are passed as an object parameter instead:
+
+```js
+cucumber.defineRule('I have numbers {a:int} and {b:int}', (world, params) => {
+  world.a = params.a;
+  world.b = params.b;
+});
+```
 
 ###  Promises
 
@@ -264,6 +273,25 @@ Scenario:
 ```
 
 The steps under `Background:` will be prepended to each scenario, and will use the same world as that scenario.
+
+### Inline rules
+
+You can define a rule in the feature file itself.  This is useful for making short rules out of repeated steps.  E.g.:
+
+```
+  Rule: I enter {title:word} {forename:word} {surname:word} as my name
+    * I enter "<title>" in title
+    * I enter "<forename>" in forename
+    * I enter "<surname>" in surname
+  
+  Scenario: enter name
+    Given I enter Mr Arthur Dent as my name
+```
+
+The rule is defined using the `Rule:` keyword, and can match arguments using the named template syntax.  These arguments
+are then substituted into the "sub" rules using the angle bracket syntax.
+
+Rules are scoped to the feature file.
 
 ## API
 
