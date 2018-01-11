@@ -28,7 +28,7 @@ Feature
   = _ annotations:Annotations TFeature name:String NL Preamble? background:Background? _ scenarios:Scenarios
 	{ return { name, background, scenarios, annotations } }
 
-Annotation 
+Annotation
   = TAt attribute:Keyword "(" args:[^)]* ")" _
   { return { name: attribute, arguments: JSON.parse('[' + args.join('') + ']') } }
   / TAt attribute:Keyword _
@@ -46,7 +46,7 @@ As
   { return actor }
 
 Want
-  = _ TIWant want:String NL 
+  = _ TIWant want:String NL
   { return want }
 
 Reason
@@ -60,12 +60,12 @@ Background
 Scenarios
   = scenarios:Scenario*
   { return flatten(scenarios) }
-          
+
 Scenario = _ annotations:Annotations TScenario name:String NL rules:Rules _
   { return { name, rules, annotations } }
 
   / _ annotations:Annotations TScenarioOutline name:String NL rules:Rules examples:Examples _
-  { 
+  {
     return examples.map((example) => ({
       name: {value: expandTemplateString(name.value, example), location: name.location},
       rules: rules.map((template) => ({value: expandTemplateString(template.value, example), location: template.location})),
@@ -78,8 +78,24 @@ Rules
   { return rules }
 
 Rule
-  = _ Clause rule:String EOS table:Table
-  { return Object.assign({}, rule, {table}) }
+  = _ Clause rule:String EOS addon:( DocStringAddon / TableAddon )
+  { return Object.assign({}, rule, addon) }
+
+TableAddon
+  = table:Table
+  { return {table} }
+
+DocStringAddon
+  = DocStringMarker lines:DocStringLine+ DocStringMarker
+  { return {docstring: lines.join('\n')} }
+
+DocStringLine
+  = WS line:(string: String ! {return string.value === ('"""')}) NL
+  { return line[0].value }
+
+DocStringMarker
+  = WS TTrippleQuote NL
+
 
 Clause
   = TGiven
@@ -87,7 +103,7 @@ Clause
   / TThen
   / TAnd
   / TStar
-	
+
 Examples
   = _ TExamples NL table:Table
   {
@@ -134,10 +150,12 @@ TExamples = "Examples:"
 TTableSep = "|"
 TStar = "*"
 TAt = "@"
+TTrippleQuote = "\"\"\""
+
 
 TTableCell
   = data:[^|\n]+
-  { 
+  {
     const cell = data.join('').trim();
 
     return /^"[^"]*"$/.test(cell)
@@ -147,7 +165,7 @@ TTableCell
 
 String
   = str:[^\n]+
-  { 
+  {
     return {
       value: str.join('').trim(),
       location: location().start
@@ -159,7 +177,7 @@ EOS
   / EOF
 
 EOF
-  = !. 
+  = !.
 
 Keyword
   = str:[a-zA-Z0-9_-]+
@@ -176,4 +194,4 @@ Comment
 
 WS "whitespace"
   = [ \t\n\r]*
-  
+

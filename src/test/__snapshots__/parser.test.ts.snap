@@ -67,6 +67,46 @@ Object {
 }
 `;
 
+exports[`Parser should parse a feature with docstring 1`] = `
+Object {
+  "annotations": Array [],
+  "background": null,
+  "name": Object {
+    "location": Object {
+      "column": 9,
+      "line": 1,
+      "offset": 8,
+    },
+    "value": "doc strings",
+  },
+  "scenarios": Array [
+    Object {
+      "annotations": Array [],
+      "name": Object {
+        "location": Object {
+          "column": 12,
+          "line": 2,
+          "offset": 32,
+        },
+        "value": "doc strings",
+      },
+      "rules": Array [
+        Object {
+          "docstring": "I have a line.
+And another line.",
+          "location": Object {
+            "column": 10,
+            "line": 3,
+            "offset": 54,
+          },
+          "value": "I have a docstring",
+        },
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Parser should parse a feature with no newline at the end of the file 1`] = `
 Object {
   "annotations": Array [],
