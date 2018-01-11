@@ -1,5 +1,5 @@
 import Transformer from './transformer';
-import {Feature, Scenario, Clause, Annotation, Rule} from './parser';
+import {Feature, Scenario, Clause, Annotation, Rule, RuleDeclaration} from './parser';
 
 // TODO: upgrade when new version is published, source-map types are currently fucked
 const SourceNode = require('source-map').SourceNode;
@@ -23,7 +23,7 @@ export default class GenericTransformer extends Transformer<any> {
     this.options = {
       getFeatureName: (feature: Feature) => 'Feature: ' + feature.name.value,
       getScenarioName: (feature: Feature, scenario: Scenario) => scenario.name.value,
-      preamble: 'const {cucumber} = require("stucumber");',
+      preamble: 'const {cucumber} = require("stucumber"); const _cucumber = cucumber.clone();',
       ...options
     };
   }
@@ -41,12 +41,15 @@ export default class GenericTransformer extends Transformer<any> {
     );
   }
 
-  protected transformFeature(filename: string, feature: Feature, scenarios) {
+  protected transformFeature(filename: string, feature: Feature, ruleDeclarations, scenarios) {
     let chunks = [
-      `${this.options.beforeAllFn}(() => cucumber.enterFeature(${JSON.stringify(
-        feature.annotations
-      )}));`,
-      `${this.options.afterAllFn}(() => cucumber.exitFeature(${JSON.stringify(
+      `${this.options.beforeAllFn}(() => {`,
+        ...ruleDeclarations,
+        `_cucumber.enterFeature(${JSON.stringify(
+          feature.annotations
+        )});
+      });`,
+      `${this.options.afterAllFn}(() => _cucumber.exitFeature(${JSON.stringify(
         feature.annotations
       )}));`,
       ...scenarios
@@ -71,32 +74,43 @@ export default class GenericTransformer extends Transformer<any> {
     );
   }
 
+  protected transformRuleDeclaration(filename: string, feature: Feature, ruleDeclaration: RuleDeclaration, rules) {
+    return new SourceNode(ruleDeclaration.template.location.line, ruleDeclaration.template.location.column, filename, [
+      '_cucumber.defineRule(',
+      JSON.stringify(ruleDeclaration.template.value),
+      ', (world, params) => Promise.resolve()',
+      ...rules,
+      ');'
+    ]);
+  }
+
   protected transformScenario(filename: string, feature: Feature, scenario: Scenario, rules) {
     return new SourceNode(scenario.name.location.line, scenario.name.location.column, filename, [
       this.applyAttributes(this.options.scenarioFn, scenario.annotations),
       `(`,
       JSON.stringify(this.options.getScenarioName(feature, scenario)),
       `, () => {`,
-      `const world = cucumber.createWorld();`,
-      `return cucumber.enterScenario(world, `,
+      `const world = _cucumber.createWorld();`,
+      `return _cucumber.enterScenario(world, `,
       JSON.stringify([...feature.annotations, ...scenario.annotations]),
       `)`,
       ...[].concat(...rules),
-      `.then(() => cucumber.exitScenario(world, `,
+      `.then(() => _cucumber.exitScenario(world, `,
       JSON.stringify([...feature.annotations, ...scenario.annotations]),
       `));`,
       `});`
     ]);
   }
 
-  protected transformRule(filename: string, feature: Feature, scenario: Scenario, rule: Rule) {
+  protected transformRule(filename: string, feature: Feature, scenario: Scenario, rule: Rule, template?: boolean) {
     return [
       `.then(() => `,
       new SourceNode(rule.location.line, rule.location.column, filename, [
-        `cucumber.rule(world, `,
+        `_cucumber.rule(world, `,
         JSON.stringify(rule.value),
         ', ',
         rule.data ? JSON.stringify(rule.data) : 'null',
+        template ? ', params' : '',
         `)`
       ]),
       `)`

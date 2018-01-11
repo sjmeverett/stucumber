@@ -40,6 +40,7 @@ Object {
     },
     "value": "background steps",
   },
+  "ruleDeclarations": Array [],
   "scenarios": Array [
     Object {
       "annotations": Array [],
@@ -79,6 +80,7 @@ Object {
     },
     "value": "background steps",
   },
+  "ruleDeclarations": Array [],
   "scenarios": Array [
     Object {
       "annotations": Array [],
@@ -118,6 +120,7 @@ Object {
     },
     "value": "foo",
   },
+  "ruleDeclarations": Array [],
   "scenarios": Array [
     Object {
       "annotations": Array [],
@@ -176,6 +179,7 @@ Object {
     },
     "value": "foo",
   },
+  "ruleDeclarations": Array [],
   "scenarios": Array [
     Object {
       "annotations": Array [
@@ -230,6 +234,7 @@ Object {
     },
     "value": "data tables",
   },
+  "ruleDeclarations": Array [],
   "scenarios": Array [
     Object {
       "annotations": Array [],
@@ -282,6 +287,7 @@ Object {
     },
     "value": "foo",
   },
+  "ruleDeclarations": Array [],
   "scenarios": Array [
     Object {
       "annotations": Array [],
@@ -347,6 +353,86 @@ Object {
           },
           "table": Array [],
           "value": "test",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Parser should parse declarative rules 1`] = `
+Object {
+  "annotations": Array [],
+  "background": null,
+  "name": Object {
+    "location": Object {
+      "column": 9,
+      "line": 1,
+      "offset": 8,
+    },
+    "value": "declarative rules",
+  },
+  "ruleDeclarations": Array [
+    Object {
+      "rules": Array [
+        Object {
+          "location": Object {
+            "column": 6,
+            "line": 4,
+            "offset": 104,
+          },
+          "table": Array [],
+          "value": "I enter \\"<title>\\" in title",
+        },
+        Object {
+          "location": Object {
+            "column": 6,
+            "line": 5,
+            "offset": 137,
+          },
+          "table": Array [],
+          "value": "I enter \\"<forename>\\" in forename",
+        },
+        Object {
+          "location": Object {
+            "column": 6,
+            "line": 6,
+            "offset": 176,
+          },
+          "table": Array [],
+          "value": "I enter \\"<surname>\\" in surname",
+        },
+      ],
+      "template": Object {
+        "location": Object {
+          "column": 8,
+          "line": 3,
+          "offset": 35,
+        },
+        "value": "I enter {title:word} {forename:word} {surname:word} as my name",
+      },
+    },
+  ],
+  "scenarios": Array [
+    Object {
+      "annotations": Array [],
+      "name": Object {
+        "location": Object {
+          "column": 12,
+          "line": 8,
+          "offset": 222,
+        },
+        "value": "enter name",
+      },
+      "rules": Array [
+        Object {
+          "location": Object {
+            "column": 10,
+            "line": 9,
+            "offset": 243,
+          },
+          "table": Array [],
+          "value": "I enter Mr Arthur Dent as my name",
         },
       ],
     },

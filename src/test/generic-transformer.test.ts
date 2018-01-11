@@ -15,6 +15,14 @@ describe('transformer', () => {
       background: [
         {value: 'background', location: {line: 2, column: 1, offset: 0}}
       ],
+      ruleDeclarations: [
+        {
+          template: {value: 'foo bar', location: {line: 3, column: 1, offset: 0}},
+          rules: [
+            {value: 'test rule', location: {line: 4, column: 1, offset: 0}},
+          ]
+        }
+      ],
       scenarios: [
         {
           name: {value: 'test scenario', location: {line: 3, column: 1, offset: 0}},

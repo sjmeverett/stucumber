@@ -31,4 +31,9 @@ describe("Parser", () => {
     const result = parse(readFileSync(__dirname + '/no-newline.feature', 'utf8'));
     expect(result).toMatchSnapshot();
   });
+
+  it("should parse declarative rules", () => {
+    const result = parse(readFileSync(__dirname + '/declarative-rules.feature', 'utf8'));
+    expect(result).toMatchSnapshot();
+  });
 });

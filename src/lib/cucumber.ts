@@ -78,10 +78,12 @@ export default class Cucumber {
 
   private compileTemplate(match: string, handler: RuleHandler) {
     const converters: ((x: string) => any)[] = [];
+    const names: string[] = [];
+    let usesNamedCaptures = false;
 
     const regex = match.replace(
-      /\{([a-zA-Z-_]+)\}/g,
-      (placeholder, typeName) => {
+      /\{(([a-zA-Z0-9-_]+):)?([a-zA-Z-_]+)\}/g,
+      (placeholder, _, name, typeName) => {
         const type = types[typeName];
 
         if (!type) {
@@ -89,18 +91,31 @@ export default class Cucumber {
         }
 
         converters.push(type.converter);
+        names.push(name);
+        usesNamedCaptures = usesNamedCaptures || !!name;
         return type.regex;
       }
     );
 
-    const convertHandler = (world, ...params: string[]) =>
-      handler(
-        world,
-        ...params.map(
-          (value, i) =>
-            typeof converters[i] === "function" ? converters[i](value) : value
-        )
+    const convertHandler = (world, ...params: string[]) => {
+      params = params.map(
+        (value, i) =>
+          typeof converters[i] === "function" ? converters[i](value) : value
       );
+
+      const namedParams = {};
+
+      if (usesNamedCaptures) {
+        params.forEach((value, i) => {
+          if (names[i])
+          namedParams[names[i]] = value;
+        });
+      }
+
+      return usesNamedCaptures 
+        ? handler(world, namedParams)
+        : handler(world, ...params);
+    };
 
     return { regex: new RegExp(`^${regex}$`), handler: convertHandler };
   }
@@ -109,7 +124,11 @@ export default class Cucumber {
     this._createWorld = _createWorld;
   }
 
-  rule(world: any, str: string, data?: string[][]): any {
+  rule(world: any, str: string, data?: string[][], params?: {[key: string]: any}): any {
+    if (params) {
+      str = str.replace(/<([^>]+)>/g, (_, key) => params[key]);
+    }
+
     for (const rule of this.rules) {
       const match = str.match(rule.regex);
 
@@ -129,6 +148,14 @@ export default class Cucumber {
 
   createWorld(): any {
     return this._createWorld ? this._createWorld() : null;
+  }
+
+  clone(): Cucumber {
+    const copy = new Cucumber();
+    copy._createWorld = this._createWorld;
+    copy.rules = this.rules.slice();
+    copy.hooks = this.hooks.slice();
+    return copy;
   }
 }
 

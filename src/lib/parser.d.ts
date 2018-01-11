@@ -4,11 +4,17 @@ export interface Feature {
   scenarios: Scenario[];
   annotations: Annotation[];
   background?: Rule[];
+  ruleDeclarations?: RuleDeclaration[];
 }
 
 export interface Annotation {
   name: string;
   arguments?: any[];
+}
+
+export interface RuleDeclaration {
+  template: Clause;
+  rules: Rule[];
 }
 
 export interface Scenario {

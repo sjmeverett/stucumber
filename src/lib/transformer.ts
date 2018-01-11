@@ -1,7 +1,14 @@
-import {Feature, Scenario, Clause, parse, Rule} from './parser';
+import {Feature, Scenario, Clause, parse, Rule, RuleDeclaration} from './parser';
 
 export default abstract class Transformer<T> {
-  protected abstract transformFeature(filename: string, feature: Feature, scenarios: T[]): T;
+  protected abstract transformFeature(filename: string, feature: Feature, ruleDeclarations: T[], scenarios: T[]): T;
+
+  protected abstract transformRuleDeclaration(
+    filename: string,
+    feature: Feature,
+    ruleDeclaration: RuleDeclaration,
+    rules: T[]
+  ): T;
 
   protected abstract transformScenario(
     filename: string,
@@ -14,7 +21,8 @@ export default abstract class Transformer<T> {
     filename: string,
     feature: Feature,
     scenario: Scenario,
-    rule: Rule
+    rule: Rule,
+    template?: boolean
   ): T;
   
   protected abstract transformFile(filename: string, file: T): string;
@@ -30,6 +38,16 @@ export default abstract class Transformer<T> {
       this.transformFeature(
         filename,
         feature,
+        feature.ruleDeclarations 
+          ? feature.ruleDeclarations.map((ruleDeclaration) =>
+            this.transformRuleDeclaration(
+              filename,
+              feature,
+              ruleDeclaration,
+              ruleDeclaration.rules.map((rule) => this.transformRule(filename, feature, null, rule, true))
+            )
+          )
+          : [],
         feature.scenarios.map((scenario) =>
           this.transformScenario(
             filename,

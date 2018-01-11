@@ -25,8 +25,8 @@
 }
 
 Feature
-  = _ annotations:Annotations TFeature name:String NL Preamble? background:Background? _ scenarios:Scenarios
-	{ return { name, background, scenarios, annotations } }
+  = _ annotations:Annotations TFeature name:String NL Preamble? ruleDeclarations:RuleDeclarations background:Background? _ scenarios:Scenarios
+	{ return { name, ruleDeclarations, background, scenarios, annotations } }
 
 Annotation 
   = TAt attribute:Keyword "(" args:[^)]* ")" _
@@ -54,14 +54,23 @@ Reason
   { return reason }
 
 Background
-  = _ TBackground NL rules:Rules _
+  = _ TBackground NL rules:Rules
   { return rules }
+
+RuleDeclarations
+  = ruleDeclarations:RuleDeclaration*
+  { return ruleDeclarations }
+
+RuleDeclaration
+  =  _ TRule template:String NL rules:Rules
+  { return {template, rules} }
 
 Scenarios
   = scenarios:Scenario*
   { return flatten(scenarios) }
           
-Scenario = _ annotations:Annotations TScenario name:String NL rules:Rules _
+Scenario 
+  = _ annotations:Annotations TScenario name:String NL rules:Rules _
   { return { name, rules, annotations } }
 
   / _ annotations:Annotations TScenarioOutline name:String NL rules:Rules examples:Examples _
@@ -126,6 +135,7 @@ TSo
 TScenario = "Scenario:"
 TScenarioOutline = "Scenario Outline:"
 TBackground = "Background:"
+TRule = "Rule:"
 TGiven = "Given"
 TWhen = "When"
 TThen = "Then"
