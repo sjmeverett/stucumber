@@ -32,7 +32,7 @@ Annotation
   = TAt attribute:Keyword "(" args:[^)]* ")" _
   { return { name: attribute, arguments: JSON.parse('[' + args.join('') + ']') } }
   / TAt attribute:Keyword _
-  { return { name: attribute } }
+  { return { name: attribute, arguments: [] } }
 
 Annotations
   = Annotation*
@@ -87,8 +87,8 @@ Rules
   { return rules }
 
 Rule
-  = _ Clause rule:String EOS table:Table
-  { return Object.assign({}, rule, {table}) }
+  = _ Clause rule:String EOS data:Table
+  { return Object.assign({}, rule, {data}) }
 
 Clause
   = TGiven

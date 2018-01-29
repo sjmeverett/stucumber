@@ -109,7 +109,7 @@ export default class GenericTransformer extends Transformer<any> {
         `_cucumber.rule(world, `,
         JSON.stringify(rule.value),
         ', ',
-        rule.data ? JSON.stringify(rule.data) : 'null',
+        rule.data && rule.data.length ? JSON.stringify(rule.data) : 'null',
         template ? ', params' : '',
         `)`
       ]),

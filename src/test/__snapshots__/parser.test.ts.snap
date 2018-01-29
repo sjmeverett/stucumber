@@ -5,30 +5,30 @@ Object {
   "annotations": Array [],
   "background": Array [
     Object {
+      "data": Array [],
       "location": Object {
         "column": 10,
         "line": 3,
         "offset": 49,
       },
-      "table": Array [],
       "value": "a thing",
     },
     Object {
+      "data": Array [],
       "location": Object {
         "column": 9,
         "line": 4,
         "offset": 66,
       },
-      "table": Array [],
       "value": "I do a thing",
     },
     Object {
+      "data": Array [],
       "location": Object {
         "column": 9,
         "line": 5,
         "offset": 88,
       },
-      "table": Array [],
       "value": "something happens",
     },
   ],
@@ -54,12 +54,12 @@ Object {
       },
       "rules": Array [
         Object {
+          "data": Array [],
           "location": Object {
             "column": 10,
             "line": 8,
             "offset": 144,
           },
-          "table": Array [],
           "value": "something",
         },
       ],
@@ -94,12 +94,12 @@ Object {
       },
       "rules": Array [
         Object {
+          "data": Array [],
           "location": Object {
             "column": 10,
             "line": 4,
             "offset": 63,
           },
-          "table": Array [],
           "value": "something",
         },
       ],
@@ -167,6 +167,7 @@ exports[`Parser should parse a scenario with annotations 1`] = `
 Object {
   "annotations": Array [
     Object {
+      "arguments": Array [],
       "name": "annotation1",
     },
   ],
@@ -184,6 +185,7 @@ Object {
     Object {
       "annotations": Array [
         Object {
+          "arguments": Array [],
           "name": "annotation2",
         },
         Object {
@@ -208,12 +210,12 @@ Object {
       },
       "rules": Array [
         Object {
+          "data": Array [],
           "location": Object {
             "column": 6,
             "line": 6,
             "offset": 120,
           },
-          "table": Array [],
           "value": "a thing",
         },
       ],
@@ -248,12 +250,7 @@ Object {
       },
       "rules": Array [
         Object {
-          "location": Object {
-            "column": 10,
-            "line": 3,
-            "offset": 53,
-          },
-          "table": Array [
+          "data": Array [
             Array [
               "datum1",
               "datum2",
@@ -267,6 +264,11 @@ Object {
               "",
             ],
           ],
+          "location": Object {
+            "column": 10,
+            "line": 3,
+            "offset": 53,
+          },
           "value": "I have data",
         },
       ],
@@ -301,57 +303,57 @@ Object {
       },
       "rules": Array [
         Object {
+          "data": Array [],
           "location": Object {
             "column": 10,
             "line": 9,
             "offset": 142,
           },
-          "table": Array [],
           "value": "that I am testing",
         },
         Object {
+          "data": Array [],
           "location": Object {
             "column": 8,
             "line": 10,
             "offset": 168,
           },
-          "table": Array [],
           "value": "I am still testing",
         },
         Object {
+          "data": Array [],
           "location": Object {
             "column": 9,
             "line": 11,
             "offset": 196,
           },
-          "table": Array [],
           "value": "I test",
         },
         Object {
+          "data": Array [],
           "location": Object {
             "column": 8,
             "line": 12,
             "offset": 211,
           },
-          "table": Array [],
           "value": "continue testing",
         },
         Object {
+          "data": Array [],
           "location": Object {
             "column": 9,
             "line": 13,
             "offset": 237,
           },
-          "table": Array [],
           "value": "I want to test",
         },
         Object {
+          "data": Array [],
           "location": Object {
             "column": 8,
             "line": 14,
             "offset": 260,
           },
-          "table": Array [],
           "value": "test",
         },
       ],
@@ -376,30 +378,30 @@ Object {
     Object {
       "rules": Array [
         Object {
+          "data": Array [],
           "location": Object {
             "column": 6,
             "line": 4,
             "offset": 104,
           },
-          "table": Array [],
           "value": "I enter \\"<title>\\" in title",
         },
         Object {
+          "data": Array [],
           "location": Object {
             "column": 6,
             "line": 5,
             "offset": 137,
           },
-          "table": Array [],
           "value": "I enter \\"<forename>\\" in forename",
         },
         Object {
+          "data": Array [],
           "location": Object {
             "column": 6,
             "line": 6,
             "offset": 176,
           },
-          "table": Array [],
           "value": "I enter \\"<surname>\\" in surname",
         },
       ],
@@ -426,12 +428,12 @@ Object {
       },
       "rules": Array [
         Object {
+          "data": Array [],
           "location": Object {
             "column": 10,
             "line": 9,
             "offset": 243,
           },
-          "table": Array [],
           "value": "I enter Mr Arthur Dent as my name",
         },
       ],

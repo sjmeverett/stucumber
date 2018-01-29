@@ -7,7 +7,7 @@ exports[`transformer should transform the AST ava style 1`] = `
 `;
 
 exports[`transformer should transform the AST jest-style 1`] = `
-"const {cucumber} = require(\\"stucumber\\"); const _cucumber = cucumber.clone();describe(\\"Feature: test feature\\", () => {beforeAll(() => {_cucumber.defineRule(\\"foo bar\\", (world, params) => Promise.resolve().then(() => _cucumber.rule(world, \\"test rule\\", null)));_cucumber.enterFeature([]);
+"const {cucumber} = require(\\"stucumber\\"); const _cucumber = cucumber.clone();describe(\\"Feature: test feature\\", () => {beforeAll(() => {_cucumber.defineRule(\\"foo bar\\", (world, params) => Promise.resolve().then(() => _cucumber.rule(world, \\"test rule\\", null, params)));_cucumber.enterFeature([]);
       });afterAll(() => _cucumber.exitFeature([]));it(\\"test scenario\\", () => {const world = _cucumber.createWorld();return _cucumber.enterScenario(world, []).then(() => _cucumber.rule(world, \\"background\\", null)).then(() => _cucumber.rule(world, \\"test rule\\", null)).then(() => _cucumber.rule(world, \\"test rule 2\\", null)).then(() => _cucumber.exitScenario(world, []));});});
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRlc3QuZmVhdHVyZSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQyxzSUFFQSxnRkFDQSx3Q0FEQSxHQUZBO0FBQUEsbURBRUEsc0hBREEseUNBQ0EsYUFDQSx3Q0FEQSxhQUVBLDBDQUZBLG1EQUZBIiwiZmlsZSI6InRlc3QuZmVhdHVyZSJ9"
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRlc3QuZmVhdHVyZSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQyxzSUFFQSxnRkFDQSxnREFEQSxHQUZBO0FBQUEsbURBRUEsc0hBREEseUNBQ0EsYUFDQSx3Q0FEQSxhQUVBLDBDQUZBLG1EQUZBIiwiZmlsZSI6InRlc3QuZmVhdHVyZSJ9"
 `;
