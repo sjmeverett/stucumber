@@ -6,7 +6,7 @@ export interface RuleHandler {
 }
 
 export interface HookHandler {
-  (world?: any, annotations?: string[]): any;
+  (world?: any, annotations?: Annotation[]): any;
 }
 
 export enum HookType {

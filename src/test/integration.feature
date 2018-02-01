@@ -13,8 +13,7 @@ Feature: integration test
   @skip
   Scenario: skip
     * fail
-    
-  @only
+  
   Scenario: lots of data
     Given lots of data
       | Header 1 | Header 2 | Header 3 |
