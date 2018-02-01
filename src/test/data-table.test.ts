@@ -1,7 +1,7 @@
 import DataTable from '../lib/data-table';
 
 describe('DataTable', () => {
-  it('should return the raw data', () => {
+  it('should return the raw data', function () {
     const table = new DataTable([['1', '2'], ['3', '4']]);
     expect(table.raw()).toEqual([['1', '2'], ['3', '4']]);
   });

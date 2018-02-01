@@ -115,23 +115,18 @@ Any rule can return a promise and it will be awaited before processing the next 
 
 ### Annotations
 
-You can prefix any feature or scenario with any number of annotations, which consist of a keyword prefixed by an `@` symbol:
+You can prefix any feature or scenario with any number of annotations, which consist of a keyword prefixed by an `@` symbol.
+The annotations can optionally have arguments.
 
 ```gherkin
-@skip
-Feature: I don't want this test to be run
-  Scenario: a simple arithmetic test
-    Given I have numbers 3 and 4
-    When I add them
-    Then I get 7
+@someAnnotation
+Feature: annotations
+
+  @anotherAnnotation(1, "a")
+  Scenario: some scenario
+    * ...
 ```
 
-Currently there are two "special" annotations which have defined behaviour:
-
-  * `@skip` - skips the test - outputs a `describe.skip` or `it.skip` for features and scenarios respectively
-  * `@only` - only runs the annotated test - outputs a `describe.only` or `it.only` depending on the annotated item
-
-Anything else is ignored, so could be useful for metadata, e.g. recording the associated issue number.
 
 ### Hooks
 
@@ -145,7 +140,7 @@ You can register functions to handle various hooks:
 To register a handler, call `cucumber.addHook`:
 
 ```js
-cucumber.addHook(HookType.BeforeEach, (world, attributes) => {
+cucumber.addHook(HookType.BeforeFeatures, function (world, annotations) {
   // do some stuff
 })
 ```
@@ -153,10 +148,11 @@ cucumber.addHook(HookType.BeforeEach, (world, attributes) => {
 The handler functions get two parameters:
 
   * `world` - the world object returned from `createWorld` - for `BeforeAll` and `AfterAll` this is not relevant and is always `null`
-  * `attributes` - a string array of any attributes defined on the feature and/or scenario (if relevant)
+  * `annotations` - an array of any annotations defined on the feature and/or scenario (if relevant)
 
-You can use the attributes parameter to do custom setup behaviour depending on attributes set on the test.  Note that a scenario
-gets the attributes from both the feature and that scenario.
+You can use the annotations parameter to do custom setup behaviour depending on annotations set on the test.
+
+The context of the hook handling function (i.e., `this`) will be the current feature or scenario, depending on the hook type.
 
 
 ### Data tables

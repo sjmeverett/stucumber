@@ -1,19 +1,48 @@
 import DataTable from "./data-table";
 import { Annotation } from "./parser";
 
+export interface TestContext {
+  name: string;
+  annotations: string[];
+  meta: {[key: string]: any};
+}
+
+export interface FeatureContext extends TestContext {
+}
+
+export interface ScenarioContext extends TestContext {
+  feature: FeatureContext;
+}
+
 export interface RuleHandler {
   (world: any, ...args: any[]): any;
 }
 
-export interface HookHandler {
-  (world?: any, annotations?: Annotation[]): any;
+export interface FeatureHookHandler {
+  (this: FeatureContext, world?: any): any;
 }
+
+export interface ScenarioHookHandler {
+  (this: ScenarioContext, world?: any, annotations?: Annotation[]): any;
+}
+
+export type HookHandler  = FeatureHookHandler | ScenarioHookHandler;
 
 export enum HookType {
   BeforeFeatures,
   BeforeScenarios,
   AfterFeatures,
   AfterScenarios
+}
+
+interface FeatureHook {
+  type: HookType.BeforeFeatures | HookType.AfterFeatures;
+  handler: FeatureHookHandler;
+}
+
+interface ScenarioHook {
+  type: HookType.BeforeScenarios | HookType.AfterScenarios;
+  handler: ScenarioHookHandler;
 }
 
 interface Hook {
@@ -48,32 +77,44 @@ export default class Cucumber {
     }
   }
 
+  addHook(type: HookType.BeforeFeatures | HookType.AfterFeatures, handler: FeatureHookHandler);
+  addHook(type: HookType.BeforeScenarios | HookType.AfterScenarios, handler: ScenarioHookHandler);
   addHook(type: HookType, handler: HookHandler) {
     this.hooks.push({ type, handler });
   }
 
-  private runHook(type: HookType, world?: any, annotations?: Annotation[]) {
+  private runHook(type: HookType, world?: any, context?: ScenarioContext | FeatureContext) {
+    const annotations = [];
+    
+    if (context) {
+      annotations.push(...context.annotations);
+
+      if ((context as ScenarioContext).feature) {
+        annotations.push(...(context as ScenarioContext).feature.annotations)
+      }
+    }
+    
     return Promise.all(
       this.hooks
         .filter(hook => hook.type === type)
-        .map(hook => hook.handler.call(this, world, annotations))
+        .map(hook => hook.handler.call(context, world, annotations))
     );
   }
 
-  enterFeature(annotations: Annotation[]) {
-    return this.runHook(HookType.BeforeFeatures, null, annotations);
+  enterFeature(feature: FeatureContext) {
+    return this.runHook(HookType.BeforeFeatures, null, feature);
   }
 
-  enterScenario(world: any, annotations: Annotation[]) {
-    return this.runHook(HookType.BeforeScenarios, world, annotations);
+  enterScenario(world: any, scenario: ScenarioContext) {
+    return this.runHook(HookType.BeforeScenarios, world, scenario);
   }
 
-  exitFeature(annotations: Annotation[]) {
-    return this.runHook(HookType.AfterFeatures, null, annotations);
+  exitFeature(feature: FeatureContext) {
+    return this.runHook(HookType.AfterFeatures, null, feature);
   }
 
-  exitScenario(world: any, annotations: Annotation[]) {
-    return this.runHook(HookType.AfterScenarios, world, annotations);
+  exitScenario(world: any, scenario: ScenarioContext) {
+    return this.runHook(HookType.AfterScenarios, world, scenario);
   }
 
   private compileTemplate(match: string, handler: RuleHandler) {

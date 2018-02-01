@@ -10,10 +10,6 @@ Feature: integration test
     When I add them
     Then I will have 8
   
-  @skip
-  Scenario: skip
-    * fail
-  
   Scenario: lots of data
     Given lots of data
       | Header 1 | Header 2 | Header 3 |

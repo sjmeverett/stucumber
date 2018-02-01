@@ -48,48 +48,64 @@ describe('Cucumber', () => {
 
   it('should run beforeAll hooks on enterFeature', () => {
     const cucumber = new Cucumber();
-    const hook = jest.fn();
+
+    const hook = jest.fn(function () {
+      expect(this.annotations).toEqual([{name: 'foo'}]);
+    });
+
     const dummy = jest.fn();
     cucumber.addHook(HookType.BeforeFeatures, hook);
     cucumber.addHook(HookType.AfterFeatures, dummy);
 
-    cucumber.enterFeature([{name: 'foo'}]);
+    cucumber.enterFeature(<any>{annotations: [{name: 'foo'}]});
     expect(hook).toHaveBeenCalledWith(null, [{name: 'foo'}]);
     expect(dummy).not.toHaveBeenCalled();
   });
   
   it('should run beforeEach hooks on enterScenario', () => {
     const cucumber = new Cucumber();
-    const hook = jest.fn();
+
+    const hook = jest.fn(function () {
+      expect(this.annotations).toEqual([{name: 'foo'}]);
+    });
+
     const dummy = jest.fn();
     cucumber.addHook(HookType.BeforeScenarios, hook);
     cucumber.addHook(HookType.AfterFeatures, dummy);
 
-    cucumber.enterScenario(1, [{name: 'foo'}]);
+    cucumber.enterScenario(1, <any>{annotations: [{name: 'foo'}]});
     expect(hook).toHaveBeenCalledWith(1, [{name: 'foo'}]);
     expect(dummy).not.toHaveBeenCalled();
   });
   
   it('should run afterAll hooks on exitFeature', () => {
     const cucumber = new Cucumber();
-    const hook = jest.fn();
+
+    const hook = jest.fn(function () {
+      expect(this.annotations).toEqual([{name: 'foo'}]);
+    });
+    
     const dummy = jest.fn();
     cucumber.addHook(HookType.AfterFeatures, hook);
     cucumber.addHook(HookType.BeforeFeatures, dummy);
 
-    cucumber.exitFeature([{name: 'foo'}]);
+    cucumber.exitFeature(<any>{annotations: [{name: 'foo'}]});
     expect(hook).toHaveBeenCalledWith(null, [{name: 'foo'}]);
     expect(dummy).not.toHaveBeenCalled();
   });
   
   it('should run afterEach hooks on exitScenario', () => {
     const cucumber = new Cucumber();
-    const hook = jest.fn();
+
+    const hook = jest.fn(function () {
+      expect(this.annotations).toEqual([{name: 'foo'}]);
+    });
+    
     const dummy = jest.fn();
     cucumber.addHook(HookType.AfterScenarios, hook);
     cucumber.addHook(HookType.BeforeFeatures, dummy);
 
-    cucumber.exitScenario(1, [{name: 'foo'}]);
+    cucumber.exitScenario(1, <any>{annotations: [{name: 'foo'}]});
     expect(hook).toHaveBeenCalledWith(1, [{name: 'foo'}]);
     expect(dummy).not.toHaveBeenCalled();
   });

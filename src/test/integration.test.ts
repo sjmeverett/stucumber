@@ -21,10 +21,6 @@ cucumber.defineRule('I will have {int}', (world, number) => {
   expect(world[world.length - 1]).toEqual(number);
 });
 
-cucumber.defineRule('fail', (world, number) => {
-  fail('should not have been called');
-});
-
 cucumber.defineRule('lots of data', (world, table) => {
   const obj = table.asObjects();
  

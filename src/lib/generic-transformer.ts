@@ -1,5 +1,6 @@
 import Transformer from './transformer';
 import {Feature, Scenario, Clause, Annotation, Rule, RuleDeclaration} from './parser';
+import { FeatureContext } from '.';
 
 // TODO: upgrade when new version is published, source-map types are currently fucked
 const SourceNode = require('source-map').SourceNode;
@@ -41,23 +42,33 @@ export default class GenericTransformer extends Transformer<any> {
     );
   }
 
+  private getContext(name: string, annotations: Annotation[], includeFeature?: boolean) {
+    const context: any = {name, annotations, meta: {}};
+    let json = JSON.stringify(context);
+
+    if (includeFeature) {
+      json = `${json.slice(0, -1)}, "feature": feature}`;
+    }
+
+    return json;
+  }
+
   protected transformFeature(filename: string, feature: Feature, ruleDeclarations, scenarios) {
     let chunks = [
+      `const feature = `,
+      this.getContext(feature.name.value, feature.annotations),
+      ';',
       `${this.options.beforeAllFn}(() => {`,
         ...ruleDeclarations,
-        `_cucumber.enterFeature(${JSON.stringify(
-          feature.annotations
-        )});
+        `_cucumber.enterFeature(feature);
       });`,
-      `${this.options.afterAllFn}(() => _cucumber.exitFeature(${JSON.stringify(
-        feature.annotations
-      )}));`,
+      `${this.options.afterAllFn}(() => _cucumber.exitFeature(feature));`,
       ...scenarios
     ];
 
     if (this.options.featureFn) {
       chunks = [
-        this.applyAttributes(this.options.featureFn, feature.annotations),
+        this.options.featureFn,
         `(`,
         JSON.stringify(this.options.getFeatureName(feature)),
         `, () => {`,
@@ -86,18 +97,17 @@ export default class GenericTransformer extends Transformer<any> {
 
   protected transformScenario(filename: string, feature: Feature, scenario: Scenario, rules) {
     return new SourceNode(scenario.name.location.line, scenario.name.location.column, filename, [
-      this.applyAttributes(this.options.scenarioFn, scenario.annotations),
+      this.options.scenarioFn,
       `(`,
       JSON.stringify(this.options.getScenarioName(feature, scenario)),
       `, () => {`,
       `const world = _cucumber.createWorld();`,
-      `return _cucumber.enterScenario(world, `,
-      JSON.stringify([...feature.annotations, ...scenario.annotations]),
-      `)`,
+      `const scenario = `,
+      this.getContext(scenario.name.value, scenario.annotations, true),
+      `;`,
+      `return _cucumber.enterScenario(world, scenario)`,
       ...[].concat(...rules),
-      `.then(() => _cucumber.exitScenario(world, `,
-      JSON.stringify([...feature.annotations, ...scenario.annotations]),
-      `));`,
+      `.then(() => _cucumber.exitScenario(world, scenario));`,
       `});`
     ]);
   }
@@ -115,17 +125,5 @@ export default class GenericTransformer extends Transformer<any> {
       ]),
       `)`
     ];
-  }
-
-  protected applyAttributes(name: string, attributes: Annotation[]) {
-    let attribute = '';
-
-    if (attributes.find((attr) => attr.name === 'skip' && attr.arguments.length === 0)) {
-      attribute = '.skip';
-    } else if (attributes.find((attr) => attr.name === 'only' && attr.arguments.length === 0)) {
-      attribute = '.only';
-    }
-
-    return name + attribute;
   }
 }

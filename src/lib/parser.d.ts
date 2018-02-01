@@ -5,6 +5,7 @@ export interface Feature {
   annotations: Annotation[];
   background?: Rule[];
   ruleDeclarations?: RuleDeclaration[];
+  meta: {[key:string]: any};
 }
 
 export interface Annotation {
@@ -21,6 +22,7 @@ export interface Scenario {
   name: Clause;
   rules: Rule[];
   annotations: Annotation[];
+  meta: {[key:string]: any};
 }
 
 export interface Rule extends Clause {
