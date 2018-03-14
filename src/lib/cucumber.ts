@@ -1,17 +1,25 @@
-import DataTable from "./data-table";
-import { Annotation } from "./parser";
+import DataTable from './data-table';
+import { Annotation } from './parser';
+import Reporter, { ReportElement } from './reporter';
 
 export interface TestContext {
   name: string;
   annotations: string[];
-  meta: {[key: string]: any};
+  meta: { [key: string]: any };
 }
 
 export interface FeatureContext extends TestContext {
+  filename: string;
 }
 
 export interface ScenarioContext extends TestContext {
   feature: FeatureContext;
+  steps: ScenarioContextStep[];
+}
+
+export interface ScenarioContextStep {
+  name: string;
+  line: string;
 }
 
 export interface RuleHandler {
@@ -26,7 +34,7 @@ export interface ScenarioHookHandler {
   (this: ScenarioContext, world?: any, annotations?: Annotation[]): any;
 }
 
-export type HookHandler  = FeatureHookHandler | ScenarioHookHandler;
+export type HookHandler = FeatureHookHandler | ScenarioHookHandler;
 
 export enum HookType {
   BeforeFeatures,
@@ -57,15 +65,20 @@ interface Rule {
 
 const types = {
   string: { regex: '"([^"]*)"' },
-  int: { regex: "([-+]?\\d+)", converter: parseInt },
-  float: { regex: "([-+]?\\d*(?:\\.\\d+)?)", converter: parseFloat },
-  word: { regex: "([^\\s]+)" }
+  int: { regex: '([-+]?\\d+)', converter: parseInt },
+  float: { regex: '([-+]?\\d*(?:\\.\\d+)?)', converter: parseFloat },
+  word: { regex: '([^\\s]+)' }
 };
 
 export default class Cucumber {
   private rules: Rule[] = [];
   private hooks: Hook[] = [];
   private _createWorld: () => any;
+  private reporter: Reporter;
+
+  constructor() {
+    this.reporter = new Reporter();
+  }
 
   defineRule(match: string, handler: RuleHandler);
   defineRule(match: RegExp, handler: RuleHandler);
@@ -77,23 +90,33 @@ export default class Cucumber {
     }
   }
 
-  addHook(type: HookType.BeforeFeatures | HookType.AfterFeatures, handler: FeatureHookHandler);
-  addHook(type: HookType.BeforeScenarios | HookType.AfterScenarios, handler: ScenarioHookHandler);
+  addHook(
+    type: HookType.BeforeFeatures | HookType.AfterFeatures,
+    handler: FeatureHookHandler
+  );
+  addHook(
+    type: HookType.BeforeScenarios | HookType.AfterScenarios,
+    handler: ScenarioHookHandler
+  );
   addHook(type: HookType, handler: HookHandler) {
     this.hooks.push({ type, handler });
   }
 
-  private runHook(type: HookType, world?: any, context?: ScenarioContext | FeatureContext) {
+  private runHook(
+    type: HookType,
+    world?: any,
+    context?: ScenarioContext | FeatureContext
+  ) {
     const annotations = [];
-    
+
     if (context) {
       annotations.push(...context.annotations);
 
       if ((context as ScenarioContext).feature) {
-        annotations.push(...(context as ScenarioContext).feature.annotations)
+        annotations.push(...(context as ScenarioContext).feature.annotations);
       }
     }
-    
+
     return Promise.all(
       this.hooks
         .filter(hook => hook.type === type)
@@ -102,10 +125,12 @@ export default class Cucumber {
   }
 
   enterFeature(feature: FeatureContext) {
+    this.reporter.startFeature(feature);
     return this.runHook(HookType.BeforeFeatures, null, feature);
   }
 
   enterScenario(world: any, scenario: ScenarioContext) {
+    this.reporter.startScenario(scenario);
     return this.runHook(HookType.BeforeScenarios, world, scenario);
   }
 
@@ -141,19 +166,18 @@ export default class Cucumber {
     const convertHandler = (world, ...params: string[]) => {
       params = params.map(
         (value, i) =>
-          typeof converters[i] === "function" ? converters[i](value) : value
+          typeof converters[i] === 'function' ? converters[i](value) : value
       );
 
       const namedParams = {};
 
       if (usesNamedCaptures) {
         params.forEach((value, i) => {
-          if (names[i])
-          namedParams[names[i]] = value;
+          if (names[i]) namedParams[names[i]] = value;
         });
       }
 
-      return usesNamedCaptures 
+      return usesNamedCaptures
         ? handler(world, namedParams)
         : handler(world, ...params);
     };
@@ -165,7 +189,12 @@ export default class Cucumber {
     this._createWorld = _createWorld;
   }
 
-  rule(world: any, str: string, data?: string[][], params?: {[key: string]: any}): any {
+  async rule(
+    world: any,
+    str: string,
+    data?: string[][],
+    params?: { [key: string]: any }
+  ) {
     if (params) {
       str = str.replace(/<([^>]+)>/g, (_, key) => params[key]);
     }
@@ -180,7 +209,15 @@ export default class Cucumber {
           args.push(new DataTable(data));
         }
 
-        return Promise.resolve(rule.handler.apply(this, args));
+        try {
+          await rule.handler.apply(this, args);
+        } catch (e) {
+          this.reporter.failStep(str, 0, e.message);
+          throw e;
+        }
+
+        this.reporter.passStep(str, 0);
+        return;
       }
     }
 
@@ -196,7 +233,12 @@ export default class Cucumber {
     copy._createWorld = this._createWorld;
     copy.rules = this.rules.slice();
     copy.hooks = this.hooks.slice();
+    copy.reporter = this.reporter;
     return copy;
+  }
+
+  getResults() {
+    return this.reporter.getResults();
   }
 }
 

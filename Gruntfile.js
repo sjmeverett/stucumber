@@ -1,5 +1,4 @@
-
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
@@ -12,12 +11,12 @@ module.exports = function (grunt) {
 
     ts: {
       default: {
-        tsconfig: {passThrough: true}
+        tsconfig: { passThrough: true }
       }
     },
-    
-    clean: ['dist']
-  })
 
-  grunt.registerTask('default', ['peg', 'ts'])
+    clean: ['dist']
+  });
+
+  grunt.registerTask('default', ['peg', 'ts']);
 };
