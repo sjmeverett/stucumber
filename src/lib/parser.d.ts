@@ -1,4 +1,3 @@
-
 export interface Feature {
   name: Clause;
   scenarios: Scenario[];
@@ -24,6 +23,7 @@ export interface Scenario {
 }
 
 export interface Rule extends Clause {
+  keyword: string;
   data?: any;
 }
 
@@ -33,7 +33,7 @@ export interface Clause {
     line: number;
     column: number;
     offset: number;
-  }
+  };
 }
 
 export function parse(source: string): Feature;

@@ -87,8 +87,8 @@ Rules
   { return rules }
 
 Rule
-  = _ Clause rule:String EOS data:Table
-  { return Object.assign({}, rule, {data}) }
+  = _ keyword:Clause rule:String EOS data:Table
+  { return Object.assign({}, rule, {data, keyword}) }
 
 Clause
   = TGiven

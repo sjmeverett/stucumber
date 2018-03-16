@@ -7,6 +7,7 @@ import * as path from 'path';
 
 export interface ReportElement {
   name: string;
+  description?: string;
   uri?: string;
   id: string;
   keyword: string;
@@ -34,6 +35,7 @@ export default class Reporter {
   currentFeature: ReportElement;
   currentScenario: ReportElement;
   currentStep: number;
+  private timestamp: number;
 
   constructor() {
     this.results = [];
@@ -42,10 +44,11 @@ export default class Reporter {
   startFeature(feature: FeatureContext) {
     this.currentFeature = {
       name: feature.name,
+      description: '',
       uri: path.relative(process.cwd(), feature.filename),
       id: feature.name.replace(/ /g, '-'),
       keyword: 'Feature',
-      tags: feature.annotations.map(name => ({ name })),
+      tags: feature.annotations.map(annotation => ({ name: annotation.name })),
       elements: []
     };
 
@@ -57,7 +60,7 @@ export default class Reporter {
       name: scenario.name,
       id: `${scenario.feature.name};${scenario.name}`.replace(/ /g, '-'),
       keyword: 'Scenario',
-      tags: scenario.annotations.map(name => ({ name })),
+      tags: scenario.annotations.map(annotation => ({ name: annotation.name })),
       steps: scenario.steps.map(step => ({
         ...step,
         result: { status: 'skipped' }
@@ -66,6 +69,7 @@ export default class Reporter {
 
     this.currentFeature.elements.push(this.currentScenario);
     this.currentStep = 0;
+    this.timestamp = Date.now();
   }
 
   private getStep(name: string) {
@@ -80,20 +84,27 @@ export default class Reporter {
     return step;
   }
 
-  passStep(name: string, duration: number) {
+  private getDuration() {
+    const now = Date.now();
+    const time = now - this.timestamp;
+    this.timestamp = now;
+    return time;
+  }
+
+  passStep(name: string) {
     const step = this.getStep(name);
     if (!step) return;
 
     step.result.status = 'passed';
-    step.result.duration = duration;
+    step.result.duration = this.getDuration();
   }
 
-  failStep(name: string, duration: number, message: string) {
+  failStep(name: string, message: string) {
     const step = this.getStep(name);
     if (!step) return;
 
     step.result.status = 'failed';
-    step.result.duration = duration;
+    step.result.duration = this.getDuration();
     step.result.error_message = message;
   }
 

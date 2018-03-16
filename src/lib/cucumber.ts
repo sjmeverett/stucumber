@@ -4,7 +4,7 @@ import Reporter, { ReportElement } from './reporter';
 
 export interface TestContext {
   name: string;
-  annotations: string[];
+  annotations: Annotation[];
   meta: { [key: string]: any };
 }
 
@@ -20,6 +20,7 @@ export interface ScenarioContext extends TestContext {
 export interface ScenarioContextStep {
   name: string;
   line: string;
+  keyword: string;
 }
 
 export interface RuleHandler {
@@ -212,11 +213,11 @@ export default class Cucumber {
         try {
           await rule.handler.apply(this, args);
         } catch (e) {
-          this.reporter.failStep(str, 0, e.message);
+          this.reporter.failStep(str, e.message);
           throw e;
         }
 
-        this.reporter.passStep(str, 0);
+        this.reporter.passStep(str);
         return;
       }
     }

@@ -6,6 +6,7 @@ Object {
   "background": Array [
     Object {
       "data": Array [],
+      "keyword": "Given",
       "location": Object {
         "column": 10,
         "line": 3,
@@ -15,6 +16,7 @@ Object {
     },
     Object {
       "data": Array [],
+      "keyword": "When",
       "location": Object {
         "column": 9,
         "line": 4,
@@ -24,6 +26,7 @@ Object {
     },
     Object {
       "data": Array [],
+      "keyword": "Then",
       "location": Object {
         "column": 9,
         "line": 5,
@@ -55,6 +58,7 @@ Object {
       "rules": Array [
         Object {
           "data": Array [],
+          "keyword": "Given",
           "location": Object {
             "column": 10,
             "line": 8,
@@ -95,6 +99,7 @@ Object {
       "rules": Array [
         Object {
           "data": Array [],
+          "keyword": "Given",
           "location": Object {
             "column": 10,
             "line": 4,
@@ -211,6 +216,7 @@ Object {
       "rules": Array [
         Object {
           "data": Array [],
+          "keyword": "*",
           "location": Object {
             "column": 6,
             "line": 6,
@@ -264,6 +270,7 @@ Object {
               "",
             ],
           ],
+          "keyword": "Given",
           "location": Object {
             "column": 10,
             "line": 3,
@@ -304,6 +311,7 @@ Object {
       "rules": Array [
         Object {
           "data": Array [],
+          "keyword": "Given",
           "location": Object {
             "column": 10,
             "line": 9,
@@ -313,6 +321,7 @@ Object {
         },
         Object {
           "data": Array [],
+          "keyword": "And",
           "location": Object {
             "column": 8,
             "line": 10,
@@ -322,6 +331,7 @@ Object {
         },
         Object {
           "data": Array [],
+          "keyword": "When",
           "location": Object {
             "column": 9,
             "line": 11,
@@ -331,6 +341,7 @@ Object {
         },
         Object {
           "data": Array [],
+          "keyword": "And",
           "location": Object {
             "column": 8,
             "line": 12,
@@ -340,6 +351,7 @@ Object {
         },
         Object {
           "data": Array [],
+          "keyword": "Then",
           "location": Object {
             "column": 9,
             "line": 13,
@@ -349,6 +361,7 @@ Object {
         },
         Object {
           "data": Array [],
+          "keyword": "And",
           "location": Object {
             "column": 8,
             "line": 14,
@@ -379,6 +392,7 @@ Object {
       "rules": Array [
         Object {
           "data": Array [],
+          "keyword": "*",
           "location": Object {
             "column": 6,
             "line": 4,
@@ -388,6 +402,7 @@ Object {
         },
         Object {
           "data": Array [],
+          "keyword": "*",
           "location": Object {
             "column": 6,
             "line": 5,
@@ -397,6 +412,7 @@ Object {
         },
         Object {
           "data": Array [],
+          "keyword": "*",
           "location": Object {
             "column": 6,
             "line": 6,
@@ -429,6 +445,7 @@ Object {
       "rules": Array [
         Object {
           "data": Array [],
+          "keyword": "Given",
           "location": Object {
             "column": 10,
             "line": 9,

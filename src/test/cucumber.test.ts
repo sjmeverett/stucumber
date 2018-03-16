@@ -66,7 +66,8 @@ describe('Cucumber', () => {
 
     cucumber.enterFeature(<any>{
       annotations: [{ name: 'foo' }],
-      name: 'test'
+      name: 'test',
+      filename: __filename
     });
     expect(hook).toHaveBeenCalledWith(null, [{ name: 'foo' }]);
     expect(dummy).not.toHaveBeenCalled();
@@ -83,7 +84,11 @@ describe('Cucumber', () => {
     cucumber.addHook(HookType.BeforeScenarios, hook);
     cucumber.addHook(HookType.AfterFeatures, dummy);
 
-    cucumber.enterFeature(<any>{ name: 'test', annotations: [] });
+    cucumber.enterFeature(<any>{
+      name: 'test',
+      annotations: [],
+      filename: __filename
+    });
 
     cucumber.enterScenario(1, <any>{
       annotations: [{ name: 'foo' }],
@@ -123,7 +128,11 @@ describe('Cucumber', () => {
     cucumber.addHook(HookType.AfterScenarios, hook);
     cucumber.addHook(HookType.AfterFeatures, dummy);
 
-    cucumber.enterFeature(<any>{ name: 'test', annotations: [] });
+    cucumber.enterFeature(<any>{
+      name: 'test',
+      annotations: [],
+      filename: __filename
+    });
 
     cucumber.exitScenario(1, <any>{
       annotations: [{ name: 'foo' }],

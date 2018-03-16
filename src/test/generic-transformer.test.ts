@@ -11,24 +11,49 @@ describe('transformer', () => {
     });
 
     const result = transformer.transform('test.feature', {
-      name: {value: 'test feature', location: {line: 1, column: 1, offset: 0}},
+      name: {
+        value: 'test feature',
+        location: { line: 1, column: 1, offset: 0 }
+      },
       background: [
-        {value: 'background', location: {line: 2, column: 1, offset: 0}}
+        {
+          value: 'background',
+          location: { line: 2, column: 1, offset: 0 },
+          keyword: ''
+        }
       ],
       ruleDeclarations: [
         {
-          template: {value: 'foo bar', location: {line: 3, column: 1, offset: 0}},
+          template: {
+            value: 'foo bar',
+            location: { line: 3, column: 1, offset: 0 }
+          },
           rules: [
-            {value: 'test rule', location: {line: 4, column: 1, offset: 0}},
+            {
+              value: 'test rule',
+              location: { line: 4, column: 1, offset: 0 },
+              keyword: ''
+            }
           ]
         }
       ],
       scenarios: [
         {
-          name: {value: 'test scenario', location: {line: 3, column: 1, offset: 0}},
+          name: {
+            value: 'test scenario',
+            location: { line: 3, column: 1, offset: 0 }
+          },
           rules: [
-            {value: 'test rule', location: {line: 4, column: 1, offset: 0}},
-            {value: 'test rule 2', location: {line: 5, column: 1, offset: 0}}
+            {
+              value: 'test rule',
+              location: { line: 4, column: 1, offset: 0 },
+              keyword: ''
+            },
+            {
+              value: 'test rule 2',
+              location: { line: 5, column: 1, offset: 0 },
+              keyword: ''
+            }
           ],
           annotations: []
         }
@@ -44,11 +69,15 @@ describe('transformer', () => {
       scenarioFn: 'test',
       beforeAllFn: 'test.before',
       afterAllFn: 'test.after',
-      getScenarioName: (feature, scenario) => `${feature.name.value} > ${scenario.name.value}`
+      getScenarioName: (feature, scenario) =>
+        `${feature.name.value} > ${scenario.name.value}`
     });
 
-    const result = transformer.transform('test.feature', readFileSync(__dirname + '/background.feature', 'utf8'));
+    const result = transformer.transform(
+      'test.feature',
+      readFileSync(__dirname + '/background.feature', 'utf8')
+    );
 
     expect(result).toMatchSnapshot();
-  })
+  });
 });

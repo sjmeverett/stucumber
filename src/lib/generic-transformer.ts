@@ -59,7 +59,8 @@ export default class GenericTransformer extends Transformer<any> {
       const stepsJson = JSON.stringify(
         rules.map(rule => ({
           name: rule.value,
-          line: rule.location.line
+          line: rule.location.line,
+          keyword: rule.keyword
         }))
       );
 
