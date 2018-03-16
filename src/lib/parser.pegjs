@@ -77,7 +77,7 @@ Scenario
   { 
     return examples.map((example) => ({
       name: {value: expandTemplateString(name.value, example), location: name.location},
-      rules: rules.map((template) => ({value: expandTemplateString(template.value, example), location: template.location})),
+      rules: rules.map((template) => ({value: expandTemplateString(template.value, example), location: template.location, keyword: template.keyword})),
       annotations
     }));
   }

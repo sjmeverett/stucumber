@@ -63,10 +63,8 @@ describe('integration test', () => {
     'integration.feature',
     fs.readFileSync(path.join(__dirname, 'integration.feature'), 'utf8')
   );
-  eval(result.toString());
-});
 
-afterAll(() => {
-  const json = JSON.stringify(cucumber.getResults());
-  fs.writeFileSync('cucumber.json', json);
+  eval(result.toString());
+
+  expect(cucumber.getResults()).toMatchSnapshot();
 });
