@@ -11,6 +11,7 @@ export interface ReportElement {
   uri?: string;
   id: string;
   keyword: string;
+  type: string;
   elements?: ReportElement[];
   steps?: ReportStep[];
   tags: ReportTag[];
@@ -48,6 +49,7 @@ export default class Reporter {
       uri: path.relative(process.cwd(), feature.filename),
       id: feature.name.replace(/ /g, '-'),
       keyword: 'Feature',
+      type: 'feature',
       tags: feature.annotations.map(annotation => ({ name: annotation.name })),
       elements: []
     };
@@ -60,6 +62,7 @@ export default class Reporter {
       name: scenario.name,
       id: `${scenario.feature.name};${scenario.name}`.replace(/ /g, '-'),
       keyword: 'Scenario',
+      type: 'scenario',
       tags: scenario.annotations.map(annotation => ({ name: annotation.name })),
       steps: scenario.steps.map(step => ({
         ...step,
@@ -88,7 +91,8 @@ export default class Reporter {
     const now = Date.now();
     const time = now - this.timestamp;
     this.timestamp = now;
-    return time;
+    // nanoseconds, because ruby
+    return time * 1e6;
   }
 
   passStep(name: string) {
