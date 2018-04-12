@@ -38,6 +38,7 @@
   },
   "homepage": "https://github.com/stewartml/stucumber#readme",
   "dependencies": {
+    "promise.prototype.finally": "^3.1.0",
     "source-map": "^0.6.1"
   }
 }

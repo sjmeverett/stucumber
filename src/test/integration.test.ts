@@ -56,7 +56,10 @@ describe('integration test', () => {
     scenarioFn: 'it',
     beforeAllFn: 'beforeAll',
     afterAllFn: 'afterAll',
-    preamble: 'const _cucumber = cucumber.clone();'
+    preamble: `
+    const _cucumber = cucumber.clone();
+    const promiseFinally = require('promise.prototype.finally');
+    `
   });
 
   const result = transformer.transform(

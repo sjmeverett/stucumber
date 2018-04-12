@@ -32,8 +32,9 @@ export default class GenericTransformer extends Transformer<any> {
       getFeatureName: (feature: Feature) => 'Feature: ' + feature.name.value,
       getScenarioName: (feature: Feature, scenario: Scenario) =>
         scenario.name.value,
-      preamble:
-        'const {cucumber} = require("stucumber"); const _cucumber = cucumber.clone();',
+      preamble: `const {cucumber} = require("stucumber");
+         const promiseFinally = require('promise.prototype.finally');
+         const _cucumber = cucumber.clone();`,
       ...options
     };
   }
@@ -152,9 +153,9 @@ export default class GenericTransformer extends Transformer<any> {
           scenario.rules
         ),
         `;`,
-        `return _cucumber.enterScenario(world, scenario)`,
+        `return promiseFinally(_cucumber.enterScenario(world, scenario)`,
         ...[].concat(...rules),
-        `.then(() => _cucumber.exitScenario(world, scenario));`,
+        `, () => _cucumber.exitScenario(world, scenario));`,
         `});`
       ]
     );
