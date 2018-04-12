@@ -1,9 +1,8 @@
 {
   "transform": {
     "^.+\\.(ts|tsx)$": "ts-jest/preprocessor",
-    "^.+\\.pegjs$": "<rootDir>/../../peg-transform"
+    "^.+\\.pegjs$": "<rootDir>/peg-transform"
   },
-  "rootDir": "src/test",
-  "testMatch": ["**/*.test.ts"],
+  "testMatch": ["<rootDir>/test/**/*.test.ts"],
   "moduleFileExtensions": ["js", "ts", "pegjs"]
 }

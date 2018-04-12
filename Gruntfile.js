@@ -4,8 +4,8 @@ module.exports = function(grunt) {
   grunt.initConfig({
     peg: {
       gherkin: {
-        src: 'src/lib/parser.pegjs',
-        dest: 'dist/lib/parser.js'
+        src: 'src/parser.pegjs',
+        dest: 'dist/parser.js'
       }
     },
 

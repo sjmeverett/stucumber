@@ -1,5 +1,5 @@
-import Cucumber from '../lib/cucumber';
-import GenericTransformer from '../lib/generic-transformer';
+import Cucumber from '../src/cucumber';
+import GenericTransformer from '../src/generic-transformer';
 import * as fs from 'fs';
 import * as path from 'path';
 

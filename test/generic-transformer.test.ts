@@ -1,4 +1,4 @@
-import GenericTransformer from '../lib/generic-transformer';
+import GenericTransformer from '../src/generic-transformer';
 import { readFileSync } from 'fs';
 
 describe('transformer', () => {

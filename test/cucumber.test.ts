@@ -1,5 +1,5 @@
-import Cucumber, { HookType } from '../lib/cucumber';
-import DataTable from '../lib/data-table';
+import Cucumber, { HookType } from '../src/cucumber';
+import DataTable from '../src/data-table';
 
 describe('Cucumber', () => {
   it('should pick the right rule', async () => {

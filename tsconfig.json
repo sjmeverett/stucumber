@@ -6,10 +6,12 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "types": ["node", "jest"],
-    "baseUrl": ".",
     "paths": {
       "source-map": ["node_modules/@types/source-map"]
     },
+    "baseUrl": ".",
     "declaration": true
-  }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }
