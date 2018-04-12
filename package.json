@@ -1,8 +1,7 @@
 {
   "name": "stucumber",
-  "version": "0.18.0",
-  "description":
-    "A Gherkin parser and Cucumber-like implementation for JavaScript",
+  "version": "0.19.0",
+  "description": "A Gherkin parser and Cucumber-like implementation for JavaScript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -28,7 +27,12 @@
     "type": "git",
     "url": "git+https://github.com/stewartml/stucumber.git"
   },
-  "keywords": ["cucumber", "gherkin", "test", "testing"],
+  "keywords": [
+    "cucumber",
+    "gherkin",
+    "test",
+    "testing"
+  ],
   "bugs": {
     "url": "https://github.com/stewartml/stucumber/issues"
   },
