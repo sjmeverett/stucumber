@@ -32,7 +32,7 @@ export default class GenericTransformer extends Transformer<any> {
       getFeatureName: (feature: Feature) => 'Feature: ' + feature.name.value,
       getScenarioName: (feature: Feature, scenario: Scenario) =>
         scenario.name.value,
-      preamble: `const {cucumber} = require("stucumber");
+      preamble: `if (!global.cucumber) { const {cucumber} = require("stucumber"); }
          const promiseFinally = require('promise.prototype.finally');
          const _cucumber = cucumber.clone();`,
       ...options
