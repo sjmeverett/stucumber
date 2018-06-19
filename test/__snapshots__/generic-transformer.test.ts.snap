@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`transformer should transform the AST ava style 1`] = `
-"const {cucumber} = require(\\"stucumber\\");
+"if (!global.cucumber) { const {cucumber} = require(\\"stucumber\\"); }
          const promiseFinally = require('promise.prototype.finally');
          const _cucumber = cucumber.clone();const feature = {\\"name\\":\\"background steps\\",\\"annotations\\":[],\\"meta\\":{}, \\"filename\\": __filename};test.before(() => {_cucumber.enterFeature(feature);
       });test.after(() => _cucumber.exitFeature(feature));test(\\"background steps > this is a test\\", () => {const world = _cucumber.createWorld();const scenario = {\\"name\\":\\"this is a test\\",\\"annotations\\":[],\\"meta\\":{}, \\"feature\\": feature, \\"steps\\": [{\\"name\\":\\"something\\",\\"line\\":8,\\"keyword\\":\\"Given\\"}]};return promiseFinally(_cucumber.enterScenario(world, scenario).then(() => _cucumber.rule(world, \\"a thing\\", null)).then(() => _cucumber.rule(world, \\"I do a thing\\", null)).then(() => _cucumber.rule(world, \\"something happens\\", null)).then(() => _cucumber.rule(world, \\"something\\", null)), () => _cucumber.exitScenario(world, scenario));});
@@ -9,7 +9,7 @@ exports[`transformer should transform the AST ava style 1`] = `
 `;
 
 exports[`transformer should transform the AST jest-style 1`] = `
-"const {cucumber} = require(\\"stucumber\\");
+"if (!global.cucumber) { const {cucumber} = require(\\"stucumber\\"); }
          const promiseFinally = require('promise.prototype.finally');
          const _cucumber = cucumber.clone();describe(\\"Feature: test feature\\", () => {const feature = {\\"name\\":\\"test feature\\",\\"annotations\\":[],\\"meta\\":{}, \\"filename\\": __filename};beforeAll(() => {_cucumber.defineRule(\\"foo bar\\", (world, params) => Promise.resolve().then(() => _cucumber.rule(world, \\"test rule\\", null, params)));_cucumber.enterFeature(feature);
       });afterAll(() => _cucumber.exitFeature(feature));it(\\"test scenario\\", () => {const world = _cucumber.createWorld();const scenario = {\\"name\\":\\"test scenario\\",\\"annotations\\":[],\\"meta\\":{}, \\"feature\\": feature, \\"steps\\": [{\\"name\\":\\"test rule\\",\\"line\\":4,\\"keyword\\":\\"\\"},{\\"name\\":\\"test rule 2\\",\\"line\\":5,\\"keyword\\":\\"\\"}]};return promiseFinally(_cucumber.enterScenario(world, scenario).then(() => _cucumber.rule(world, \\"background\\", null)).then(() => _cucumber.rule(world, \\"test rule\\", null)).then(() => _cucumber.rule(world, \\"test rule 2\\", null)), () => _cucumber.exitScenario(world, scenario));});});
