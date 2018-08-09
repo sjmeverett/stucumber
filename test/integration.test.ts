@@ -5,7 +5,7 @@ import * as path from 'path';
 
 const cucumber = new Cucumber();
 
-cucumber.defineCreateWorld(() => []);
+cucumber.defineCreateWorld(async () => []);
 
 cucumber.defineRule('I take the number {int}', (world, number) => {
   world.push(number);

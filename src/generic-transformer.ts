@@ -144,8 +144,8 @@ export default class GenericTransformer extends Transformer<any> {
         this.options.scenarioFn,
         `(`,
         JSON.stringify(this.options.getScenarioName(feature, scenario)),
-        `, () => {`,
-        `const world = _cucumber.createWorld();`,
+        `, async () => {`,
+        `const world = await _cucumber.createWorld();`,
         `const scenario = `,
         this.getContext(
           scenario.name.value,

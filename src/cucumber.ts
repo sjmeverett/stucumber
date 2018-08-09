@@ -64,6 +64,8 @@ interface Rule {
   handler: RuleHandler;
 }
 
+type CreateWorldFn = () => Promise<any>;
+
 const types = {
   string: { regex: '"([^"]*)"' },
   int: { regex: '([-+]?\\d+)', converter: parseInt },
@@ -74,7 +76,7 @@ const types = {
 export default class Cucumber {
   private rules: Rule[] = [];
   private hooks: Hook[] = [];
-  private _createWorld: () => any;
+  private _createWorld: CreateWorldFn;
   private reporter: Reporter;
 
   constructor() {
@@ -186,7 +188,7 @@ export default class Cucumber {
     return { regex: new RegExp(`^${regex}$`), handler: convertHandler };
   }
 
-  defineCreateWorld(_createWorld: () => any): void {
+  defineCreateWorld(_createWorld: CreateWorldFn): void {
     this._createWorld = _createWorld;
   }
 
@@ -225,8 +227,8 @@ export default class Cucumber {
     throw new Error(`Could not find matching rule: ${str}`);
   }
 
-  createWorld(): any {
-    return this._createWorld ? this._createWorld() : null;
+  async createWorld(): Promise<any> {
+    return this._createWorld ? await this._createWorld() : null;
   }
 
   clone(): Cucumber {
