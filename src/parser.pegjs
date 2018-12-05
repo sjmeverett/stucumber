@@ -28,7 +28,7 @@ Feature
   = _ annotations:Annotations TFeature name:String NL Preamble? ruleDeclarations:RuleDeclarations background:Background? _ scenarios:Scenarios
 	{ return { name, ruleDeclarations, background, scenarios, annotations } }
 
-Annotation 
+Annotation
   = TAt attribute:Keyword "(" args:[^)]* ")" _
   { return { name: attribute, arguments: JSON.parse('[' + args.join('') + ']') } }
   / TAt attribute:Keyword _
@@ -46,7 +46,7 @@ As
   { return actor }
 
 Want
-  = _ TIWant want:String NL 
+  = _ TIWant want:String NL
   { return want }
 
 Reason
@@ -68,13 +68,13 @@ RuleDeclaration
 Scenarios
   = scenarios:Scenario*
   { return flatten(scenarios) }
-          
-Scenario 
+
+Scenario
   = _ annotations:Annotations TScenario name:String NL rules:Rules _
   { return { name, rules, annotations } }
 
   / _ annotations:Annotations TScenarioOutline name:String NL rules:Rules examples:Examples _
-  { 
+  {
     return examples.map((example) => ({
       name: {value: expandTemplateString(name.value, example), location: name.location},
       rules: rules.map((template) => ({value: expandTemplateString(template.value, example), location: template.location, keyword: template.keyword})),
@@ -96,7 +96,7 @@ Clause
   / TThen
   / TAnd
   / TStar
-	
+
 Examples
   = _ TExamples NL table:Table
   {
@@ -147,7 +147,7 @@ TAt = "@"
 
 TTableCell
   = data:[^|\n]+
-  { 
+  {
     const cell = data.join('').trim();
 
     return /^"[^"]*"$/.test(cell)
@@ -157,7 +157,7 @@ TTableCell
 
 String
   = str:[^\n]+
-  { 
+  {
     return {
       value: str.join('').trim(),
       location: location().start
@@ -169,13 +169,13 @@ EOS
   / EOF
 
 EOF
-  = !. 
+  = !.
 
 Keyword
   = str:[a-zA-Z0-9_-]+
   { return str.join('').trim() }
 
-NL = "\n"
+NL = [\n\r]
 
 _ = WS Comment _
   / WS
@@ -186,4 +186,3 @@ Comment
 
 WS "whitespace"
   = [ \t\n\r]*
-  
