@@ -6,6 +6,8 @@ describe('transformer', () => {
     const transformer = new GenericTransformer({
       featureFn: 'describe',
       scenarioFn: 'it',
+      beforeEachFn: 'beforeEach',
+      afterEachFn: 'afterEach',
       beforeAllFn: 'beforeAll',
       afterAllFn: 'afterAll'
     });
@@ -67,6 +69,8 @@ describe('transformer', () => {
   it('should transform the AST ava style', () => {
     const transformer = new GenericTransformer({
       scenarioFn: 'test',
+      beforeEachFn: 'test.beforeEach',
+      afterEachFn: 'test.afterEach',
       beforeAllFn: 'test.before',
       afterAllFn: 'test.after',
       getScenarioName: (feature, scenario) =>
