@@ -1,4 +1,5 @@
 src/
 dist/test/
 jest.config.json
+peg-transform.js
 tsconfig.json
