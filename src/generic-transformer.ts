@@ -15,6 +15,8 @@ const SourceNode = require('source-map').SourceNode;
 export interface GenericTransformerOptions {
   featureFn?: string;
   scenarioFn: string;
+  beforeEachFn: string;
+  afterEachFn: string;
   beforeAllFn: string;
   afterAllFn: string;
   preamble?: string;
@@ -87,14 +89,14 @@ export default class GenericTransformer extends Transformer<any> {
       `let index = 0;`,
       `${this.options.beforeAllFn}(() => {`,
       ...ruleDeclarations,
-      `_cucumber.enterFeature(feature);
+      `return _cucumber.enterFeature(feature);
       });`,
       `${this.options.afterAllFn}(() => _cucumber.exitFeature(feature));`,
-      `beforeEach(async () => {`,
+      `${this.options.beforeEachFn}(async () => {`,
       `world = await _cucumber.createWorld();`,
       `return _cucumber.enterScenario(world, scenarios[index])`,
       `});`,
-      `afterEach(async () => {`,
+      `${this.options.afterEachFn}(async () => {`,
       `_cucumber.exitScenario(world, scenarios[index]);`,
       `index++;`,
       `});`,
