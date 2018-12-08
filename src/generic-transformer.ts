@@ -97,7 +97,7 @@ export default class GenericTransformer extends Transformer<any> {
       `return _cucumber.enterScenario(world, scenarios[index])`,
       `});`,
       `${this.options.afterEachFn}(async () => {`,
-      `_cucumber.exitScenario(world, scenarios[index]);`,
+      `await _cucumber.exitScenario(world, scenarios[index]);`,
       `index++;`,
       `});`,
       ...scenarios
