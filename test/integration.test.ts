@@ -5,7 +5,7 @@ import * as path from 'path';
 
 const cucumber = new Cucumber();
 
-cucumber.defineCreateWorld(() => []);
+cucumber.defineCreateWorld(async () => []);
 
 cucumber.defineRule('I take the number {int}', (world, number) => {
   world.push(number);
@@ -54,6 +54,8 @@ cucumber.defineRule('I have a list', (world, table) => {
 describe('integration test', () => {
   const transformer = new GenericTransformer({
     scenarioFn: 'it',
+    beforeEachFn: 'beforeEach',
+    afterEachFn: 'afterEach',
     beforeAllFn: 'beforeAll',
     afterAllFn: 'afterAll',
     preamble: `

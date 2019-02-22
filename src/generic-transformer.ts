@@ -15,6 +15,8 @@ const SourceNode = require('source-map').SourceNode;
 export interface GenericTransformerOptions {
   featureFn?: string;
   scenarioFn: string;
+  beforeEachFn: string;
+  afterEachFn: string;
   beforeAllFn: string;
   afterAllFn: string;
   preamble?: string;
@@ -32,8 +34,7 @@ export default class GenericTransformer extends Transformer<any> {
       getFeatureName: (feature: Feature) => 'Feature: ' + feature.name.value,
       getScenarioName: (feature: Feature, scenario: Scenario) =>
         scenario.name.value,
-      preamble: `const {cucumber} = require("stucumber");
-         const promiseFinally = require('promise.prototype.finally');
+      preamble: `const {cucumber} = require("stucumber-ext");
          const _cucumber = cucumber.clone();`,
       ...options
     };
@@ -83,11 +84,22 @@ export default class GenericTransformer extends Transformer<any> {
       `const feature = `,
       this.getContext(feature.name.value, feature.annotations),
       ';',
+      `const scenarios = [` + feature.scenarios.map((scenario) => this.getContext(scenario.name.value, scenario.annotations, scenario.rules)).join() + `];`,
+      'let world;',
+      `let index = 0;`,
       `${this.options.beforeAllFn}(() => {`,
       ...ruleDeclarations,
-      `_cucumber.enterFeature(feature);
+      `return _cucumber.enterFeature(feature);
       });`,
       `${this.options.afterAllFn}(() => _cucumber.exitFeature(feature));`,
+      `${this.options.beforeEachFn}(async () => {`,
+      `world = await _cucumber.createWorld();`,
+      `return _cucumber.enterScenario(world, scenarios[index])`,
+      `});`,
+      `${this.options.afterEachFn}(async () => {`,
+      `await _cucumber.exitScenario(world, scenarios[index]);`,
+      `index++;`,
+      `});`,
       ...scenarios
     ];
 
@@ -145,17 +157,8 @@ export default class GenericTransformer extends Transformer<any> {
         `(`,
         JSON.stringify(this.options.getScenarioName(feature, scenario)),
         `, () => {`,
-        `const world = _cucumber.createWorld();`,
-        `const scenario = `,
-        this.getContext(
-          scenario.name.value,
-          scenario.annotations,
-          scenario.rules
-        ),
-        `;`,
-        `return promiseFinally(_cucumber.enterScenario(world, scenario)`,
+        `return Promise.resolve()`,
         ...[].concat(...rules),
-        `, () => _cucumber.exitScenario(world, scenario));`,
         `});`
       ]
     );

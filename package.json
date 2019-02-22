@@ -1,31 +1,32 @@
 {
-  "name": "stucumber",
-  "version": "0.19.0",
-  "description": "A Gherkin parser and Cucumber-like implementation for JavaScript",
+  "name": "stucumber-ext",
+  "version": "0.22.0",
+  "description": "Fork of stucumber - a Gherkin parser and Cucumber-like implementation for JavaScript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "jest --config=jest.config.json --no-cache",
-    "prepublish": "grunt"
+    "build": "npm run build:lib && npm run build:parser",
+    "build:lib": "tsc",
+    "build:parser": "pegjs -o ./dist/parser.js ./src/parser.pegjs",
+    "test": "jest --config=jest.config.json --no-cache"
   },
   "author": "Stewart MacKenzie-Leigh",
+  "contributors": [
+    "Stephen Nolan"
+  ],
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^21.1.8",
     "@types/node": "^8.0.57",
     "@types/source-map": "^0.5.2",
-    "grunt": "^1.0.1",
-    "grunt-contrib-clean": "^1.1.0",
-    "grunt-peg": "^2.0.1",
-    "grunt-ts": "^6.0.0-beta.17",
     "jest": "^21.2.1",
-    "load-grunt-tasks": "^3.5.2",
+    "pegjs": "^0.10.0",
     "ts-jest": "^21.2.4",
     "typescript": "^2.6.2"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stewartml/stucumber.git"
+    "url": "git+https://github.com/mynameisstephen/stucumber-ext.git"
   },
   "keywords": [
     "cucumber",
@@ -34,9 +35,9 @@
     "testing"
   ],
   "bugs": {
-    "url": "https://github.com/stewartml/stucumber/issues"
+    "url": "https://github.com/mynameisstephen/stucumber-ext/issues"
   },
-  "homepage": "https://github.com/stewartml/stucumber#readme",
+  "homepage": "https://github.com/mynameisstephen/stucumber-ext#readme",
   "dependencies": {
     "promise.prototype.finally": "^3.1.0",
     "source-map": "^0.6.1"

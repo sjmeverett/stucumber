@@ -1,4 +1,13 @@
-# stucumber
+# stucumber-ext
+
+Fork of [stucumber](https://github.com/stewartml/stucumber#readme) with a number of improvements:
+
+* Fix BeforeFeatures hook ignoring returned promises.
+* Use beforeEach and afterEach so hooks don't eat into test timeouts.
+* Support CRLF line endings.
+* Allow create world to return a promise.
+
+# Original docs
 
 A Gherkin parser and Cucumber-like implementation for JavaScript.  Used by [gherkin-jest](https://www.npmjs.com/package/gherkin-jest) and [stucumber-register](https://www.npmjs.com/package/stucumber-register).
 
@@ -279,7 +288,7 @@ You can define a rule in the feature file itself.  This is useful for making sho
     * I enter "<title>" in title
     * I enter "<forename>" in forename
     * I enter "<surname>" in surname
-  
+
   Scenario: enter name
     Given I enter Mr Arthur Dent as my name
 ```
@@ -304,11 +313,11 @@ the class are called by translated gherkin tests.
 
 **`defineCreateWorld(_createWorld: () => any): void`**
 
-Defines a factory function for creating a "world", which is passed to every rule.  
+Defines a factory function for creating a "world", which is passed to every rule.
 This should be some object which holds the context of your test.
 
 Parameters:
-  
+
   * `_createWorld` - a function which returns an instance of a world, whatever
   that might be
 
