@@ -1,6 +1,6 @@
 {
   "transform": {
-    "^.+\\.(ts|tsx)$": "ts-jest/preprocessor",
+    "^.+\\.(ts|tsx)$": "ts-jest",
     "^.+\\.pegjs$": "<rootDir>/peg-transform"
   },
   "testMatch": ["<rootDir>/test/**/*.test.ts"],
